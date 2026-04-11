@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Register — FaceAuth Guard{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-container">
+        <!-- Left: Form or Camera -->
+        <div class="auth-card" id="register-card">
+            {% if capture_mode %}
+            <!-- ═══ Camera Capture Mode ═══ -->
+            <div class="auth-header">
+                <div class="auth-icon">📸</div>
+                <h2>Face Capture</h2>
+                <p>Position your face in the frame. We'll capture {{ config.REGISTRATION_MIN_FRAMES if config else 5 }} snapshots.</p>
+            </div>
+
+            <div class="camera-container" id="camera-container">
+                <video id="webcam-video" autoplay playsinline muted></video>
+                <canvas id="webcam-canvas" style="display:none;"></canvas>
+                <img id="processed-feed" class="processed-feed" alt="Processed feed">
+                <div class="camera-overlay" id="camera-overlay">
+                    <div class="face-guide"></div>
+                </div>
+                <div class="camera-status" id="camera-status">Initializing camera...</div>
+            </div>
+
+            <!-- Capture Progress -->
+            <div class="capture-progress" id="capture-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="progress-text" id="progress-text">0 / 5 frames captured</span>
+            </div>
+
+            <div class="status-message" id="status-message">
+                <span class="status-icon">⏳</span>
+                <span class="status-text">Starting face capture...</span>
+            </div>
+
+            <input type="hidden" id="reg-username" value="{{ username }}">
+            <input type="hidden" id="reg-email" value="{{ email }}">
+
+            {% else %}
+            <!-- ═══ Registration Form ═══ -->
+            <div class="auth-header">
+                <div class="auth-icon">🛡️</div>
+                <h2>Create Account</h2>
+                <p>Register with face biometrics for secure authentication.</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('main.register') }}" class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="username" name="username" placeholder="Choose a username"
+                               required minlength="3" autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="email" name="email" placeholder="your@email.com"
+                               required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔑</span>
+                        <input type="password" id="password" name="password" placeholder="Min 6 characters"
+                               required minlength="6" autocomplete="new-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" id="btn-register">
+                    <span>Continue to Face Capture</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{{ url_for('main.login') }}">Sign In</a></p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right: Info Panel -->
+        <div class="auth-info-panel">
+            <div class="info-content">
+                <h3>🔐 How Registration Works</h3>
+                <div class="info-steps">
+                    <div class="info-step">
+                        <div class="info-step-num">1</div>
+                        <div>
+                            <h4>Create Account</h4>
+                            <p>Enter your username, email, and a secure password.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-step-num">2</div>
+                        <div>
+                            <h4>Face Capture</h4>
+                            <p>Your webcam captures multiple angles of your face.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-step-num">3</div>
+                        <div>
+                            <h4>Encoding Generation</h4>
+                            <p>A unique 128-dimensional face encoding is generated and stored securely.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-note">
+                    <p>🔒 Your face data is stored locally as mathematical encodings — not as images.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if capture_mode %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const username = document.getElementById('reg-username').value;
+        startRegistration(username);
+    });
+</script>
+{% endif %}
+{% endblock %}

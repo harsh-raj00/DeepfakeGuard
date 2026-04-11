@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Login — FaceAuth Guard{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-container">
+        <!-- Left: Form or Camera -->
+        <div class="auth-card" id="login-card">
+            {% if face_auth_mode %}
+            <!-- ═══ Face Authentication Mode ═══ -->
+            <div class="auth-header">
+                <div class="auth-icon">🔐</div>
+                <h2>Face Authentication</h2>
+                <p>Welcome back, <strong>{{ username }}</strong>. Look at the camera and blink naturally.</p>
+            </div>
+
+            <div class="camera-container" id="camera-container">
+                <video id="webcam-video" autoplay playsinline muted></video>
+                <canvas id="webcam-canvas" style="display:none;"></canvas>
+                <img id="processed-feed" class="processed-feed" alt="Processed feed">
+                <div class="camera-overlay" id="camera-overlay">
+                    <div class="face-guide"></div>
+                </div>
+                <div class="camera-status" id="camera-status">Initializing...</div>
+            </div>
+
+            <!-- Auth Status Indicators -->
+            <div class="auth-indicators" id="auth-indicators">
+                <div class="indicator" id="ind-face">
+                    <span class="ind-dot"></span>
+                    <span class="ind-label">Face Detection</span>
+                </div>
+                <div class="indicator" id="ind-recog">
+                    <span class="ind-dot"></span>
+                    <span class="ind-label">Recognition</span>
+                </div>
+                <div class="indicator" id="ind-live">
+                    <span class="ind-dot"></span>
+                    <span class="ind-label">Liveness</span>
+                </div>
+                <div class="indicator" id="ind-deepfake">
+                    <span class="ind-dot"></span>
+                    <span class="ind-label">Deepfake Check</span>
+                </div>
+            </div>
+
+            <!-- Alert Banner -->
+            <div class="alert-banner hidden" id="alert-banner">
+                <span class="alert-icon">🚨</span>
+                <span class="alert-text" id="alert-text">Threat detected</span>
+            </div>
+
+            <div class="status-message" id="status-message">
+                <span class="status-icon">⏳</span>
+                <span class="status-text">Verifying identity...</span>
+            </div>
+
+            <input type="hidden" id="auth-username" value="{{ username }}">
+
+            {% else %}
+            <!-- ═══ Login Form ═══ -->
+            <div class="auth-header">
+                <div class="auth-icon">👋</div>
+                <h2>Welcome Back</h2>
+                <p>Enter your credentials to begin face authentication.</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('main.login') }}" class="auth-form" id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="username" name="username" placeholder="Your username"
+                               required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔑</span>
+                        <input type="password" id="password" name="password" placeholder="Your password"
+                               required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" id="btn-login">
+                    <span>Verify & Authenticate</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="{{ url_for('main.register') }}">Register Now</a></p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right: Info Panel -->
+        <div class="auth-info-panel">
+            <div class="info-content">
+                <h3>🛡️ Multi-Layer Authentication</h3>
+                <div class="info-steps">
+                    <div class="info-step">
+                        <div class="info-step-num">1</div>
+                        <div>
+                            <h4>Password Verification</h4>
+                            <p>Your password is verified against a bcrypt hash.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-step-num">2</div>
+                        <div>
+                            <h4>Face Matching</h4>
+                            <p>Your face is compared against your stored 128-d encoding.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-step-num">3</div>
+                        <div>
+                            <h4>Liveness + Deepfake</h4>
+                            <p>Blink detection and MesoNet CNN ensure you're a real person.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-note">
+                    <p>⏱️ Authentication completes in ~3-5 seconds with all checks.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if face_auth_mode %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const username = document.getElementById('auth-username').value;
+        startAuthentication(username);
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% block title %}Dataset & Model — FaceAuth Guard{% endblock %}
+
+{% block content %}
+<section class="dataset-section">
+    <div class="section-container">
+        <!-- Header -->
+        <div class="section-header">
+            <span class="section-badge">📊 ML Pipeline</span>
+            <h1 class="section-title">
+                Dataset &
+                <span class="gradient-text">Model Architecture</span>
+            </h1>
+            <p class="section-subtitle">
+                Our MesoNet deepfake detector is trained on the Kaggle "Deepfake and Real Images" dataset
+                and uses multi-signal fusion for robust classification.
+            </p>
+        </div>
+
+        <!-- Dataset Info -->
+        <div class="ds-grid">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>📁 Training Dataset</h2>
+                    <span class="card-badge">Kaggle / Zenodo</span>
+                </div>
+                <div class="ds-content">
+                    <div class="ds-info-row">
+                        <span class="ds-label">Name</span>
+                        <span class="ds-value">Deepfake and Real Images</span>
+                    </div>
+                    <div class="ds-info-row">
+                        <span class="ds-label">Author</span>
+                        <span class="ds-value">Manjil Karki</span>
+                    </div>
+                    <div class="ds-info-row">
+                        <span class="ds-label">Source</span>
+                        <a href="https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images" target="_blank" class="ds-value ds-link">
+                            kaggle.com/datasets/manjilkarki/deepfake-and-real-images ↗
+                        </a>
+                    </div>
+                    <div class="ds-info-row">
+                        <span class="ds-label">Image Size</span>
+                        <span class="ds-value">256 × 256 px (JPG)</span>
+                    </div>
+                    <div class="ds-info-row">
+                        <span class="ds-label">Classes</span>
+                        <span class="ds-value">
+                            <span class="tag-green">Real</span>
+                            <span class="tag-red">Fake (Deepfake)</span>
+                        </span>
+                    </div>
+                    <div class="ds-info-row">
+                        <span class="ds-label">Splits</span>
+                        <span class="ds-value">Train / Validation / Test</span>
+                    </div>
+                    <div class="ds-info-row">
+                        <span class="ds-label">Downloads</span>
+                        <span class="ds-value">46,500+</span>
+                    </div>
+                    <div class="ds-citation">
+                        <strong>Citation:</strong> Karki, M. (2022). <em>Deepfake and Real Images</em>. Kaggle.
+                        Sourced from <a href="https://zenodo.org/record/5528418" target="_blank">Zenodo (Record 5528418)</a>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>🧠 MesoNet Architecture</h2>
+                    <span class="card-badge">~28K params</span>
+                </div>
+                <div class="ds-content">
+                    <div class="arch-flow">
+                        <div class="arch-layer">
+                            <span class="arch-name">Input</span>
+                            <span class="arch-detail">256×256×3</span>
+                        </div>
+                        <div class="arch-arrow">↓</div>
+                        <div class="arch-layer arch-conv">
+                            <span class="arch-name">Conv2D(8, 3×3) + BN + Pool</span>
+                            <span class="arch-detail">Block 1</span>
+                        </div>
+                        <div class="arch-arrow">↓</div>
+                        <div class="arch-layer arch-conv">
+                            <span class="arch-name">Conv2D(8, 5×5) + BN + Pool</span>
+                            <span class="arch-detail">Block 2</span>
+                        </div>
+                        <div class="arch-arrow">↓</div>
+                        <div class="arch-layer arch-conv">
+                            <span class="arch-name">Conv2D(16, 5×5) + BN + Pool</span>
+                            <span class="arch-detail">Block 3</span>
+                        </div>
+                        <div class="arch-arrow">↓</div>
+                        <div class="arch-layer arch-conv">
+                            <span class="arch-name">Conv2D(16, 5×5) + BN + Pool(4)</span>
+                            <span class="arch-detail">Block 4</span>
+                        </div>
+                        <div class="arch-arrow">↓</div>
+                        <div class="arch-layer arch-dense">
+                            <span class="arch-name">Flatten → Dense(16) → Dense(1)</span>
+                            <span class="arch-detail">Sigmoid output</span>
+                        </div>
+                    </div>
+                    <div class="ds-citation" style="margin-top: 16px;">
+                        <strong>Reference:</strong> Afchar, D. et al. (2018). <em>MesoNet: a Compact Facial Video Forgery Detection Network</em>. IEEE WIFS.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Signal Detection -->
+        <div class="dashboard-card" style="margin-top: 32px;">
+            <div class="card-header">
+                <h2>🔬 Multi-Signal Deepfake Detection</h2>
+                <span class="card-badge">3 Independent Signals</span>
+            </div>
+            <div class="ds-content">
+                <div class="signal-grid">
+                    <div class="signal-card signal-primary">
+                        <div class="signal-weight">50%</div>
+                        <h3>🧠 MesoNet CNN</h3>
+                        <p>Learns mesoscopic-level GAN artifacts through 4 convolutional blocks. Trained on Kaggle dataset.</p>
+                        <span class="feature-tag">Deep Learning</span>
+                    </div>
+                    <div class="signal-card signal-secondary">
+                        <div class="signal-weight">30%</div>
+                        <h3>🔍 Texture Analysis</h3>
+                        <p>Laplacian variance for blur detection, block-wise texture consistency, Canny edge density analysis.</p>
+                        <span class="feature-tag">Computer Vision</span>
+                    </div>
+                    <div class="signal-card signal-tertiary">
+                        <div class="signal-weight">20%</div>
+                        <h3>📡 Frequency (DCT)</h3>
+                        <p>2D Discrete Cosine Transform spectral analysis. Detects GAN-specific frequency domain anomalies.</p>
+                        <span class="feature-tag">Signal Processing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Results -->
+        {% if training_metrics %}
+        <div class="dashboard-card" style="margin-top: 32px;">
+            <div class="card-header">
+                <h2>📈 Training Results</h2>
+                <span class="card-badge">{{ training_metrics.get('dataset', 'Trained') }}</span>
+            </div>
+            <div class="ds-content">
+                <div class="metrics-grid">
+                    <div class="metric-card metric-blue">
+                        <span class="metric-val">{{ "%.2f"|format(training_metrics.accuracy * 100) }}%</span>
+                        <span class="metric-name">Accuracy</span>
+                    </div>
+                    <div class="metric-card metric-green">
+                        <span class="metric-val">{{ "%.2f"|format(training_metrics.precision * 100) }}%</span>
+                        <span class="metric-name">Precision</span>
+                    </div>
+                    <div class="metric-card metric-purple">
+                        <span class="metric-val">{{ "%.2f"|format(training_metrics.recall * 100) }}%</span>
+                        <span class="metric-name">Recall</span>
+                    </div>
+                    <div class="metric-card metric-cyan">
+                        <span class="metric-val">{{ "%.2f"|format(training_metrics.f1_score * 100) }}%</span>
+                        <span class="metric-name">F1-Score</span>
+                    </div>
+                    <div class="metric-card metric-orange">
+                        <span class="metric-val">{{ "%.2f"|format(training_metrics.far * 100) }}%</span>
+                        <span class="metric-name">FAR</span>
+                    </div>
+                    <div class="metric-card metric-red">
+                        <span class="metric-val">{{ "%.2f"|format(training_metrics.frr * 100) }}%</span>
+                        <span class="metric-name">FRR</span>
+                    </div>
+                </div>
+
+                {% if training_curves_exist %}
+                <div class="training-curves">
+                    <img src="{{ url_for('main.training_curves_image') }}" alt="Training Curves" class="curves-img" id="training-curves-img">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Live Image Test with Grad-CAM -->
+        <div class="dashboard-card" style="margin-top: 32px;" id="test-section">
+            <div class="card-header">
+                <h2>🧪 Test Image — Deepfake Detector</h2>
+                <span class="card-badge">Grad-CAM Visualization</span>
+            </div>
+            <div class="ds-content">
+                <p class="ds-desc">Upload a face image to test deepfake detection. The system will analyze it through all 3 signals and generate a
+                    <strong>Grad-CAM heatmap</strong> showing which facial regions activated the classification.</p>
+
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="file-input" accept="image/*" style="display:none;">
+                    <div class="upload-prompt" id="upload-prompt" onclick="document.getElementById('file-input').click()">
+                        <span class="upload-icon">📷</span>
+                        <p>Click to upload a face image</p>
+                        <p class="upload-hint">Supports JPG, PNG, BMP · Max 10MB</p>
+                    </div>
+                </div>
+
+                <div class="test-results hidden" id="test-results">
+                    <div class="result-grid">
+                        <div class="result-image-box">
+                            <h4>Original Image</h4>
+                            <img id="original-img" src="" alt="Original">
+                        </div>
+                        <div class="result-image-box">
+                            <h4>Grad-CAM Heatmap</h4>
+                            <img id="gradcam-img" src="" alt="Grad-CAM">
+                            <p class="gradcam-desc">Warm colors = regions that influenced the decision</p>
+                        </div>
+                    </div>
+
+                    <div class="result-verdict" id="result-verdict">
+                        <div class="verdict-label" id="verdict-label">Analyzing...</div>
+                        <div class="verdict-confidence" id="verdict-confidence"></div>
+                    </div>
+
+                    <div class="result-signals" id="result-signals">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const fileInput = document.getElementById('file-input');
+const uploadArea = document.getElementById('upload-area');
+const testResults = document.getElementById('test-results');
+
+fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Show original image
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        document.getElementById('original-img').src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Upload to server
+    const formData = new FormData();
+    formData.append('image', file);
+
+    testResults.classList.remove('hidden');
+    document.getElementById('verdict-label').textContent = 'Analyzing...';
+    document.getElementById('verdict-label').className = 'verdict-label';
+    document.getElementById('verdict-confidence').textContent = '';
+    document.getElementById('result-signals').innerHTML = '';
+    document.getElementById('gradcam-img').src = '';
+
+    try {
+        const response = await fetch('/api/predict-image', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.error) {
+            document.getElementById('verdict-label').textContent = 'Error: ' + data.error;
+            return;
+        }
+
+        // Verdict
+        const verdictEl = document.getElementById('verdict-label');
+        verdictEl.textContent = data.label;
+        verdictEl.className = 'verdict-label verdict-' + data.label.toLowerCase();
+
+        // Confidence
+        const confPct = (data.confidence_real * 100).toFixed(1);
+        document.getElementById('verdict-confidence').textContent =
+            `Real Confidence: ${confPct}% | Fake Confidence: ${(data.confidence_fake * 100).toFixed(1)}%`;
+
+        // Grad-CAM
+        if (data.gradcam_b64) {
+            document.getElementById('gradcam-img').src = 'data:image/jpeg;base64,' + data.gradcam_b64;
+        }
+
+        // Signals
+        const signalsHtml = Object.entries(data.signals || {}).map(([key, val]) => {
+            const pct = (val * 100).toFixed(1);
+            const color = val > 0.7 ? 'green' : val > 0.4 ? 'orange' : 'red';
+            return `
+                <div class="signal-result">
+                    <span class="signal-name">${key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                    <div class="signal-bar"><div class="signal-fill signal-${color}" style="width:${pct}%"></div></div>
+                    <span class="signal-pct">${pct}%</span>
+                </div>`;
+        }).join('');
+        document.getElementById('result-signals').innerHTML = signalsHtml;
+
+    } catch (err) {
+        document.getElementById('verdict-label').textContent = 'Error: ' + err.message;
+    }
+});
+
+// Drag & drop
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('drag-active');
+});
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('drag-active');
+});
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('drag-active');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        fileInput.files = files;
+        fileInput.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+{% endblock %}

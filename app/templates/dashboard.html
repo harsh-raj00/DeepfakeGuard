@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — FaceAuth Guard{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="dashboard-container">
+        <!-- Welcome Header -->
+        <div class="dashboard-header" id="dashboard-header">
+            <div class="welcome-card">
+                <div class="welcome-avatar">
+                    <span>{{ user.username[0]|upper }}</span>
+                </div>
+                <div class="welcome-info">
+                    <h1>Welcome, {{ user.username }}!</h1>
+                    <p>You are securely authenticated via face biometrics.</p>
+                </div>
+                <div class="welcome-badge">
+                    <span class="badge-verified">✅ Verified</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card stat-success">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="stat-success">{{ history|selectattr('status', 'equalto', 'SUCCESS')|list|length }}</div>
+                <div class="stat-label">Successful Logins</div>
+                <div class="stat-bar"><div class="stat-bar-fill stat-bar-green" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card stat-danger">
+                <div class="stat-icon">🚫</div>
+                <div class="stat-value" id="stat-denied">{{ history|selectattr('status', 'equalto', 'DENIED')|list|length }}</div>
+                <div class="stat-label">Denied Attempts</div>
+                <div class="stat-bar"><div class="stat-bar-fill stat-bar-red" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card stat-warning">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-value" id="stat-alerts">{{ history|selectattr('alert_type', 'defined')|selectattr('alert_type', 'ne', None)|list|length }}</div>
+                <div class="stat-label">Security Alerts</div>
+                <div class="stat-bar"><div class="stat-bar-fill stat-bar-orange" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card stat-info">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">{{ users|length }}</div>
+                <div class="stat-label">Registered Users</div>
+                <div class="stat-bar"><div class="stat-bar-fill stat-bar-blue" style="width: 100%"></div></div>
+            </div>
+        </div>
+
+        <!-- Confidence Score Visualization -->
+        <div class="dashboard-row">
+            <div class="dashboard-card confidence-card" id="confidence-card">
+                <div class="card-header">
+                    <h2>📊 Confidence Score Analysis</h2>
+                    <span class="card-badge">Latest Session</span>
+                </div>
+                <div class="confidence-grid">
+                    <div class="confidence-item">
+                        <div class="confidence-header">
+                            <span class="conf-label">Face Recognition</span>
+                            <span class="conf-value" id="conf-face">—</span>
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill conf-fill-blue" id="conf-bar-face" style="width: 0%"></div>
+                        </div>
+                        <span class="conf-desc">Identity match confidence</span>
+                    </div>
+                    <div class="confidence-item">
+                        <div class="confidence-header">
+                            <span class="conf-label">Liveness Score</span>
+                            <span class="conf-value" id="conf-liveness">—</span>
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill conf-fill-green" id="conf-bar-liveness" style="width: 0%"></div>
+                        </div>
+                        <span class="conf-desc">Blink & head movement detection</span>
+                    </div>
+                    <div class="confidence-item">
+                        <div class="confidence-header">
+                            <span class="conf-label">Deepfake Detection</span>
+                            <span class="conf-value" id="conf-deepfake">—</span>
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill conf-fill-purple" id="conf-bar-deepfake" style="width: 0%"></div>
+                        </div>
+                        <span class="conf-desc">Real vs. manipulated face</span>
+                    </div>
+                    <div class="confidence-item">
+                        <div class="confidence-header">
+                            <span class="conf-label">Overall Security</span>
+                            <span class="conf-value" id="conf-overall">—</span>
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill conf-fill-cyan" id="conf-bar-overall" style="width: 0%"></div>
+                        </div>
+                        <span class="conf-desc">Combined multi-signal score</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="dashboard-card health-card" id="health-card">
+                <div class="card-header">
+                    <h2>🩺 System Health</h2>
+                    <span class="card-badge live-badge">● Live</span>
+                </div>
+                <div class="health-grid">
+                    <div class="health-item">
+                        <div class="health-dot health-green"></div>
+                        <span class="health-label">Face Detection</span>
+                        <span class="health-status">Active</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-dot health-green"></div>
+                        <span class="health-label">Face Recognition</span>
+                        <span class="health-status">Active</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-dot health-green"></div>
+                        <span class="health-label">Liveness (EAR)</span>
+                        <span class="health-status">Active</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-dot health-green"></div>
+                        <span class="health-label">MesoNet CNN</span>
+                        <span class="health-status">Active</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-dot health-green"></div>
+                        <span class="health-label">Texture Analysis</span>
+                        <span class="health-status">Active</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-dot health-green"></div>
+                        <span class="health-label">Frequency (DCT)</span>
+                        <span class="health-status">Active</span>
+                    </div>
+                </div>
+                <div class="health-footer">
+                    <span class="health-uptime">All modules operational</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attack History -->
+        <div class="dashboard-card attack-card" id="attack-card">
+            <div class="card-header">
+                <h2>🚨 Attack History & Threat Log</h2>
+                <span class="card-badge">Security Monitor</span>
+            </div>
+            <div class="attack-timeline">
+                {% set attacks = history|selectattr('alert_type', 'defined')|selectattr('alert_type', 'ne', None)|list %}
+                {% if attacks %}
+                    {% for entry in attacks[:10] %}
+                    <div class="attack-entry attack-{{ entry.alert_type|lower|replace('_', '-') }}">
+                        <div class="attack-icon">
+                            {% if 'DEEPFAKE' in (entry.alert_type or '') %}🤖
+                            {% elif 'PHOTO' in (entry.alert_type or '') %}📸
+                            {% elif 'SUSPICIOUS' in (entry.alert_type or '') %}⚠️
+                            {% else %}🚨{% endif %}
+                        </div>
+                        <div class="attack-details">
+                            <div class="attack-type">{{ entry.alert_type|replace('_', ' ') }}</div>
+                            <div class="attack-meta">
+                                <span>👤 {{ entry.username }}</span>
+                                <span>🕐 {{ entry.timestamp }}</span>
+                            </div>
+                            <div class="attack-info">{{ entry.details if entry.details else 'Automated threat detection triggered.' }}</div>
+                        </div>
+                        <div class="attack-badge badge-{{ entry.status|lower }}">{{ entry.status }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <span class="empty-icon">🛡️</span>
+                        <p>No security threats detected. All authentication attempts appear legitimate.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Login History Table -->
+        <div class="dashboard-card" id="history-card">
+            <div class="card-header">
+                <h2>🕐 Login History</h2>
+                <span class="card-badge">Last 20 entries</span>
+            </div>
+            <div class="table-container">
+                {% if history %}
+                <table class="data-table" id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Status</th>
+                            <th>Face Conf.</th>
+                            <th>Blinks</th>
+                            <th>Deepfake Conf.</th>
+                            <th>Alert</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in history %}
+                        <tr class="row-{{ entry.status|lower }}">
+                            <td>{{ entry.timestamp }}</td>
+                            <td>
+                                <span class="status-badge badge-{{ entry.status|lower }}">
+                                    {{ entry.status }}
+                                </span>
+                            </td>
+                            <td>{{ "%.2f"|format(entry.face_confidence) if entry.face_confidence else "—" }}</td>
+                            <td>{{ entry.liveness_blinks if entry.liveness_blinks else "—" }}</td>
+                            <td>{{ "%.2f"|format(entry.deepfake_confidence) if entry.deepfake_confidence else "—" }}</td>
+                            <td>
+                                {% if entry.alert_type %}
+                                    <span class="alert-tag">{{ entry.alert_type }}</span>
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td class="details-cell">{{ entry.details if entry.details else "—" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <span class="empty-icon">📋</span>
+                    <p>No login history yet. Your authentication events will appear here.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Registered Users -->
+        <div class="dashboard-card" id="users-card">
+            <div class="card-header">
+                <h2>👥 Registered Users</h2>
+                <span class="card-badge">{{ users|length }} total</span>
+            </div>
+            <div class="users-grid">
+                {% for u in users %}
+                <div class="user-card-mini">
+                    <div class="user-avatar">{{ u.username[0]|upper }}</div>
+                    <div class="user-info">
+                        <strong>{{ u.username }}</strong>
+                        <span>{{ u.email }}</span>
+                        <span class="user-meta">Encodings: {{ u.num_encodings }} · Registered: {{ u.registered_at }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stat bars
+    setTimeout(() => {
+        const total = parseInt(document.getElementById('stat-success')?.textContent || 0) +
+                      parseInt(document.getElementById('stat-denied')?.textContent || 0);
+        if (total > 0) {
+            const successPct = (parseInt(document.getElementById('stat-success')?.textContent || 0) / total) * 100;
+            const deniedPct = (parseInt(document.getElementById('stat-denied')?.textContent || 0) / total) * 100;
+            document.querySelectorAll('.stat-bar-green').forEach(el => el.style.width = successPct + '%');
+            document.querySelectorAll('.stat-bar-red').forEach(el => el.style.width = deniedPct + '%');
+        }
+    }, 300);
+
+    // Load confidence scores from API
+    fetch('/api/system-stats')
+        .then(r => r.json())
+        .then(data => {
+            const faceConf = data.avg_face_confidence || 0;
+            const dfConf = data.avg_deepfake_confidence || 0;
+            const livenessConf = data.success_rate ? Math.min(data.success_rate / 100, 1.0) : 0;
+            const overall = (faceConf + dfConf + livenessConf) / 3;
+
+            animateConfidence('conf-face', 'conf-bar-face', faceConf);
+            animateConfidence('conf-liveness', 'conf-bar-liveness', livenessConf);
+            animateConfidence('conf-deepfake', 'conf-bar-deepfake', dfConf);
+            animateConfidence('conf-overall', 'conf-bar-overall', overall);
+        })
+        .catch(() => {});
+});
+
+function animateConfidence(valueId, barId, value) {
+    const valueEl = document.getElementById(valueId);
+    const barEl = document.getElementById(barId);
+    if (!valueEl || !barEl) return;
+
+    const pct = Math.round(value * 100);
+    valueEl.textContent = pct > 0 ? pct + '%' : '—';
+    setTimeout(() => {
+        barEl.style.width = pct + '%';
+    }, 200);
+}
+</script>
+{% endblock %}

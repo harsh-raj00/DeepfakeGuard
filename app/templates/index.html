@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% block title %}FaceAuth Guard — Secure Anti-Deepfake Authentication{% endblock %}
+
+{% block content %}
+<section class="hero" id="hero-section">
+    <div class="hero-bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-badge">🔒 Anti-Deepfake Security System</div>
+        <h1 class="hero-title">
+            Face-Detection Based
+            <span class="hero-gradient">Authentication</span>
+            <span class="hero-sub-line">to Protect Against Deepfake Attacks</span>
+        </h1>
+        <p class="hero-subtitle">
+            A multi-layered biometric authentication system that combines real-time face detection,
+            identity verification, liveness detection, and MesoNet-powered deepfake detection to
+            ensure only real, live humans gain access.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="stat-number">96%</span>
+                <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="hero-stat">
+                <span class="stat-number">~65ms</span>
+                <span class="stat-label">Per Frame</span>
+            </div>
+            <div class="hero-stat">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Security Layers</span>
+            </div>
+            <div class="hero-stat">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Detection Signals</span>
+            </div>
+        </div>
+        <div class="hero-actions">
+            <a href="{{ url_for('main.register') }}" class="btn btn-primary btn-lg" id="hero-register">
+                <span>Get Started</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a href="{{ url_for('main.login') }}" class="btn btn-glass btn-lg" id="hero-login">
+                <span>Sign In</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Threat Section — Why Deepfake Protection Matters -->
+<section class="threat-section" id="threat">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-badge">⚠️ The Threat</span>
+            <h2 class="section-title">Why Deepfake Protection Matters</h2>
+            <p class="section-subtitle">Traditional face recognition is fundamentally broken. Modern AI can generate faces indistinguishable from reality.</p>
+        </div>
+        <div class="threat-grid">
+            <div class="threat-card threat-photo">
+                <div class="threat-level">Low Risk</div>
+                <div class="threat-icon">📸</div>
+                <h3>Photo Replay Attack</h3>
+                <p>Attacker presents a printed photograph or phone screen showing the target's face to the camera.</p>
+                <div class="threat-defense">
+                    <span class="defense-label">🛡️ Defense:</span> Liveness Detection (EAR blink)
+                </div>
+            </div>
+            <div class="threat-card threat-video">
+                <div class="threat-level">Medium Risk</div>
+                <div class="threat-icon">📹</div>
+                <h3>Video Replay Attack</h3>
+                <p>Attacker plays a pre-recorded video of the target person in front of the authentication camera.</p>
+                <div class="threat-defense">
+                    <span class="defense-label">🛡️ Defense:</span> Head Movement + EAR Tracking
+                </div>
+            </div>
+            <div class="threat-card threat-deepfake">
+                <div class="threat-level">High Risk</div>
+                <div class="threat-icon">🤖</div>
+                <h3>Deepfake (GAN) Attack</h3>
+                <p>AI-generated face using GANs (StyleGAN, DeepFaceLab) creates a hyper-realistic synthetic face in real-time.</p>
+                <div class="threat-defense">
+                    <span class="defense-label">🛡️ Defense:</span> MesoNet CNN + Texture + DCT
+                </div>
+            </div>
+            <div class="threat-card threat-swap">
+                <div class="threat-level">Critical Risk</div>
+                <div class="threat-icon">🎭</div>
+                <h3>Face Swap Attack</h3>
+                <p>Real-time face swapping that replaces the attacker's face with the target's identity while preserving expressions.</p>
+                <div class="threat-defense">
+                    <span class="defense-label">🛡️ Defense:</span> Frequency Analysis + Multi-Signal Fusion
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4-Layer Security Pipeline -->
+<section class="features-section" id="features">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-badge">🔬 How It Works</span>
+            <h2 class="section-title">4-Layer Security Pipeline</h2>
+            <p class="section-subtitle">Every authentication attempt passes through four independent verification modules. All must pass simultaneously.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" id="feature-detection">
+                <div class="feature-icon">
+                    <div class="icon-glow"></div>
+                    👁️
+                </div>
+                <h3>Layer 1: Face Detection</h3>
+                <p>OpenCV's SSD deep neural network with ResNet-10 backbone detects and localizes faces at 30+ FPS on CPU. Confidence threshold: 70%.</p>
+                <div class="feature-detail">
+                    <span>SSD + ResNet-10</span>
+                    <span>~15ms</span>
+                </div>
+            </div>
+            <div class="feature-card" id="feature-recognition">
+                <div class="feature-icon">
+                    <div class="icon-glow"></div>
+                    🧬
+                </div>
+                <h3>Layer 2: Face Recognition</h3>
+                <p>128-dimensional face encodings compared against stored user identity using L2 distance. Uses dlib with MediaPipe fallback.</p>
+                <div class="feature-detail">
+                    <span>128-D Encodings</span>
+                    <span>~25ms</span>
+                </div>
+            </div>
+            <div class="feature-card" id="feature-liveness">
+                <div class="feature-icon">
+                    <div class="icon-glow"></div>
+                    😊
+                </div>
+                <h3>Layer 3: Liveness Detection</h3>
+                <p>Eye Aspect Ratio (EAR) blink counting and nose-tip head movement tracking using MediaPipe 468-point FaceMesh. Defeats all static attacks.</p>
+                <div class="feature-detail">
+                    <span>EAR + Head Tracking</span>
+                    <span>~10ms</span>
+                </div>
+            </div>
+            <div class="feature-card feature-card-highlight" id="feature-deepfake">
+                <div class="feature-icon">
+                    <div class="icon-glow"></div>
+                    🤖
+                </div>
+                <h3>Layer 4: Deepfake Detection</h3>
+                <p>Multi-signal fusion combining MesoNet CNN (50%), texture analysis (30%), and DCT frequency analysis (20%) for robust deepfake classification.</p>
+                <div class="feature-detail">
+                    <span>MesoNet + Texture + DCT</span>
+                    <span>~45ms</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Deepfake Detection Deep Dive -->
+<section class="deepfake-detail-section" id="deepfake-detail">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-badge">🧠 Core Feature</span>
+            <h2 class="section-title">Deepfake Detection — 3-Signal Fusion</h2>
+            <p class="section-subtitle">Our deepfake detector uses three independent signals for robust classification. Even if one signal is fooled, the others catch the attack.</p>
+        </div>
+        <div class="signal-detail-grid">
+            <div class="signal-detail-card">
+                <div class="signal-header signal-header-blue">
+                    <span class="signal-pct-badge">50%</span>
+                    <h3>🧠 MesoNet CNN</h3>
+                </div>
+                <div class="signal-body">
+                    <p>Meso4 architecture with 4 convolutional blocks (~28K parameters). Trained on the Kaggle "Deepfake and Real Images" dataset. Learns mesoscopic-level features that GANs cannot perfectly replicate.</p>
+                    <div class="signal-specs">
+                        <div class="spec-row"><span>Architecture</span><span>Conv2D(8) → Conv2D(8) → Conv2D(16) → Conv2D(16) → Dense(1)</span></div>
+                        <div class="spec-row"><span>Input Size</span><span>256 × 256 × 3</span></div>
+                        <div class="spec-row"><span>Output</span><span>Sigmoid (0=Fake, 1=Real)</span></div>
+                        <div class="spec-row"><span>Reference</span><span>Afchar et al., IEEE WIFS 2018</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="signal-detail-card">
+                <div class="signal-header signal-header-green">
+                    <span class="signal-pct-badge">30%</span>
+                    <h3>🔍 Texture Analysis</h3>
+                </div>
+                <div class="signal-body">
+                    <p>Classic computer vision techniques that analyze spatial texture properties. GAN-generated faces often show local inconsistencies in blur, sharpness, and edge density.</p>
+                    <div class="signal-specs">
+                        <div class="spec-row"><span>Laplacian</span><span>Blur variance detection (oversmoothed faces = fake)</span></div>
+                        <div class="spec-row"><span>Block Consistency</span><span>Divides face into regions, checks variance uniformity</span></div>
+                        <div class="spec-row"><span>Canny Edges</span><span>Edge density ratio (too few/many edges = suspicious)</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="signal-detail-card">
+                <div class="signal-header signal-header-purple">
+                    <span class="signal-pct-badge">20%</span>
+                    <h3>📡 Frequency (DCT) Analysis</h3>
+                </div>
+                <div class="signal-body">
+                    <p>2D Discrete Cosine Transform spectral analysis. GANs leave characteristic fingerprints in the frequency domain that are invisible to the human eye but detectable through spectral analysis.</p>
+                    <div class="signal-specs">
+                        <div class="spec-row"><span>Method</span><span>2D DCT → log spectrum → band energy ratios</span></div>
+                        <div class="spec-row"><span>GAN Artifact</span><span>Missing high-frequency content (oversmoothing)</span></div>
+                        <div class="spec-row"><span>Periodic Check</span><span>Peak-to-median ratio for periodic artifacts</span></div>
+                        <div class="spec-row"><span>Reference</span><span>Durall et al., CVPR 2020</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Decision Engine Flow -->
+<section class="pipeline-section" id="pipeline">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-badge">⚙️ Authentication Flow</span>
+            <h2 class="section-title">Decision Engine — All 4 Gates Must Pass</h2>
+        </div>
+        <div class="pipeline-flow">
+            <div class="pipeline-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Detect</h4>
+                    <p>Face consistently detected in >50% of frames</p>
+                </div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Recognize</h4>
+                    <p>Identity matches stored encoding (L2 < 0.45)</p>
+                </div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Verify Liveness</h4>
+                    <p>At least 1 blink detected (EAR < 0.21)</p>
+                </div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Deepfake Check</h4>
+                    <p>Real confidence ≥ 75% across all signals</p>
+                </div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step step-final">
+                <div class="step-number">✓</div>
+                <div class="step-content">
+                    <h4>Access Granted</h4>
+                    <p>All 4 gates passed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack Section -->
+<section class="tech-section" id="tech-stack">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-badge">🛠️ Technology</span>
+            <h2 class="section-title">Built With</h2>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-item"><span class="tech-name">Python 3.9+</span></div>
+            <div class="tech-item"><span class="tech-name">OpenCV DNN</span></div>
+            <div class="tech-item"><span class="tech-name">TensorFlow</span></div>
+            <div class="tech-item"><span class="tech-name">MesoNet</span></div>
+            <div class="tech-item"><span class="tech-name">MediaPipe</span></div>
+            <div class="tech-item"><span class="tech-name">Flask</span></div>
+            <div class="tech-item"><span class="tech-name">SocketIO</span></div>
+            <div class="tech-item"><span class="tech-name">SQLite</span></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

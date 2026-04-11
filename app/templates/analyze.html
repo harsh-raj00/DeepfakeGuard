@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% block title %}Deepfake Analyzer — FaceAuth Guard{% endblock %}
+
+{% block content %}
+<section class="analyzer-section" id="analyzer">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-badge">🔬 Deepfake Analysis Tool</span>
+            <h2 class="section-title">Upload Image or Video</h2>
+            <p class="section-subtitle">Test any face image or video against our multi-signal deepfake detection pipeline. Get a real-time classification with confidence scores.</p>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="analyzer-upload-area" id="upload-area">
+            <div class="upload-dropzone" id="dropzone">
+                <div class="upload-icon">📤</div>
+                <h3>Drop Image or Video Here</h3>
+                <p>or click to browse files</p>
+                <p class="upload-formats">Supports: JPG, PNG, WEBP, MP4, AVI, MOV</p>
+                <input type="file" id="file-input" accept="image/*,video/*" hidden>
+            </div>
+        </div>
+
+        <!-- Preview + Results Grid -->
+        <div class="analyzer-results" id="results-container" style="display: none;">
+            <div class="result-preview-col">
+                <div class="result-card">
+                    <h3>📷 Input</h3>
+                    <div class="preview-wrapper">
+                        <img id="preview-image" src="" alt="Preview" style="display:none;">
+                        <video id="preview-video" src="" controls style="display:none;"></video>
+                    </div>
+                </div>
+            </div>
+            <div class="result-analysis-col">
+                <div class="result-card">
+                    <h3>🔬 Analysis Result</h3>
+                    <div id="analysis-loading" class="analysis-loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Analyzing with MesoNet + Texture + DCT...</p>
+                    </div>
+                    <div id="analysis-result" style="display: none;">
+                        <!-- Verdict -->
+                        <div id="verdict-box" class="verdict-box">
+                            <span id="verdict-icon" class="verdict-icon"></span>
+                            <span id="verdict-label" class="verdict-label"></span>
+                        </div>
+
+                        <!-- Confidence Bar -->
+                        <div class="confidence-bar-wrapper">
+                            <div class="confidence-labels">
+                                <span>FAKE</span><span>REAL</span>
+                            </div>
+                            <div class="confidence-bar">
+                                <div id="confidence-fill" class="confidence-fill"></div>
+                            </div>
+                            <div class="confidence-value" id="confidence-value">0%</div>
+                        </div>
+
+                        <!-- Signal Breakdown -->
+                        <div class="signal-breakdown">
+                            <h4>Signal Breakdown</h4>
+                            <div class="signal-row">
+                                <span>🧠 MesoNet CNN (50%)</span>
+                                <span id="sig-cnn">—</span>
+                            </div>
+                            <div class="signal-row">
+                                <span>🔍 Texture Analysis (30%)</span>
+                                <span id="sig-texture">—</span>
+                            </div>
+                            <div class="signal-row">
+                                <span>📡 Frequency DCT (20%)</span>
+                                <span id="sig-frequency">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Grad-CAM -->
+                        <div id="gradcam-section" class="gradcam-section" style="display:none;">
+                            <h4>🔥 Grad-CAM Heatmap</h4>
+                            <p class="gradcam-desc">Highlighted regions show where the model focused its attention.</p>
+                            <img id="gradcam-image" src="" alt="Grad-CAM Heatmap">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Frames Analysis -->
+        <div id="video-frames-container" class="video-frames-container" style="display:none;">
+            <div class="result-card">
+                <h3>🎬 Video Frame-by-Frame Analysis</h3>
+                <div class="video-summary" id="video-summary"></div>
+                <div class="frames-grid" id="frames-grid"></div>
+            </div>
+        </div>
+
+        <!-- Upload Another -->
+        <div id="upload-another" style="display: none; text-align: center; margin-top: 24px;">
+            <button class="btn btn-glass btn-lg" onclick="resetAnalyzer()">📤 Analyze Another File</button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('file-input');
+const resultsContainer = document.getElementById('results-container');
+const previewImage = document.getElementById('preview-image');
+const previewVideo = document.getElementById('preview-video');
+const analysisLoading = document.getElementById('analysis-loading');
+const analysisResult = document.getElementById('analysis-result');
+const uploadAnother = document.getElementById('upload-another');
+const uploadArea = document.getElementById('upload-area');
+const videoFramesContainer = document.getElementById('video-frames-container');
+
+// Drag and drop
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('drag-over');
+    if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+
+function handleFile(file) {
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    if (!isImage && !isVideo) { alert('Please upload an image or video file.'); return; }
+
+    uploadArea.style.display = 'none';
+    resultsContainer.style.display = 'grid';
+    uploadAnother.style.display = 'block';
+
+    if (isImage) {
+        previewImage.style.display = 'block';
+        previewVideo.style.display = 'none';
+        previewImage.src = URL.createObjectURL(file);
+        analyzeImage(file);
+    } else {
+        previewVideo.style.display = 'block';
+        previewImage.style.display = 'none';
+        previewVideo.src = URL.createObjectURL(file);
+        analyzeVideo(file);
+    }
+}
+
+function analyzeImage(file) {
+    analysisLoading.style.display = 'flex';
+    analysisResult.style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch('/api/predict-image', { method: 'POST', body: formData })
+        .then(r => r.json())
+        .then(data => {
+            analysisLoading.style.display = 'none';
+            analysisResult.style.display = 'block';
+            displayResult(data);
+        })
+        .catch(err => {
+            analysisLoading.style.display = 'none';
+            analysisResult.style.display = 'block';
+            analysisResult.innerHTML = '<div class="verdict-box verdict-error">⚠️ Analysis failed: ' + err.message + '</div>';
+        });
+}
+
+function analyzeVideo(file) {
+    analysisLoading.style.display = 'flex';
+    analysisResult.style.display = 'none';
+    videoFramesContainer.style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('video', file);
+
+    fetch('/api/predict-video', { method: 'POST', body: formData })
+        .then(r => r.json())
+        .then(data => {
+            analysisLoading.style.display = 'none';
+            analysisResult.style.display = 'block';
+            displayResult(data.summary || data);
+
+            // Show frame analysis if available
+            if (data.frames && data.frames.length > 0) {
+                videoFramesContainer.style.display = 'block';
+                displayVideoFrames(data);
+            }
+        })
+        .catch(err => {
+            analysisLoading.style.display = 'none';
+            analysisResult.style.display = 'block';
+            analysisResult.innerHTML = '<div class="verdict-box verdict-error">⚠️ Analysis failed: ' + err.message + '</div>';
+        });
+}
+
+function displayResult(data) {
+    const conf = (data.confidence_real || 0) * 100;
+    const isReal = data.is_real;
+    const label = data.label || (isReal ? 'REAL' : 'FAKE');
+
+    // Verdict
+    document.getElementById('verdict-icon').textContent = isReal ? '✅' : '🚨';
+    document.getElementById('verdict-label').textContent = label;
+    const vBox = document.getElementById('verdict-box');
+    vBox.className = 'verdict-box ' + (isReal ? 'verdict-real' : (conf > 30 ? 'verdict-suspicious' : 'verdict-fake'));
+
+    // Confidence bar
+    document.getElementById('confidence-fill').style.width = conf + '%';
+    document.getElementById('confidence-fill').className = 'confidence-fill ' + (isReal ? 'fill-real' : (conf > 30 ? 'fill-suspicious' : 'fill-fake'));
+    document.getElementById('confidence-value').textContent = conf.toFixed(1) + '%';
+
+    // Signal breakdown
+    const signals = data.signals || {};
+    document.getElementById('sig-cnn').textContent = signals.cnn ? (signals.cnn * 100).toFixed(1) + '%' : '—';
+    document.getElementById('sig-texture').textContent = signals.texture ? (signals.texture * 100).toFixed(1) + '%' : '—';
+    document.getElementById('sig-frequency').textContent = signals.frequency ? (signals.frequency * 100).toFixed(1) + '%' : '—';
+
+    // Grad-CAM
+    if (data.gradcam_base64) {
+        document.getElementById('gradcam-section').style.display = 'block';
+        document.getElementById('gradcam-image').src = 'data:image/jpeg;base64,' + data.gradcam_base64;
+    }
+}
+
+function displayVideoFrames(data) {
+    const summary = document.getElementById('video-summary');
+    const grid = document.getElementById('frames-grid');
+    const s = data.summary || {};
+
+    summary.innerHTML = `
+        <div class="vs-stat"><span>Frames Analyzed</span><strong>${data.frames.length}</strong></div>
+        <div class="vs-stat"><span>Avg Confidence</span><strong>${((s.confidence_real || 0) * 100).toFixed(1)}%</strong></div>
+        <div class="vs-stat"><span>Fake Frames</span><strong>${data.frames.filter(f => !f.is_real).length} / ${data.frames.length}</strong></div>
+        <div class="vs-stat ${s.is_real ? 'vs-real' : 'vs-fake'}"><span>Verdict</span><strong>${s.label || 'UNKNOWN'}</strong></div>
+    `;
+
+    grid.innerHTML = '';
+    data.frames.forEach((f, i) => {
+        const div = document.createElement('div');
+        div.className = 'frame-card ' + (f.is_real ? 'frame-real' : 'frame-fake');
+        div.innerHTML = `
+            <div class="frame-num">Frame ${f.frame_number || i + 1}</div>
+            <div class="frame-conf">${(f.confidence_real * 100).toFixed(0)}%</div>
+            <div class="frame-label">${f.label}</div>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+function resetAnalyzer() {
+    uploadArea.style.display = 'block';
+    resultsContainer.style.display = 'none';
+    uploadAnother.style.display = 'none';
+    analysisResult.style.display = 'none';
+    videoFramesContainer.style.display = 'none';
+    previewImage.src = '';
+    previewVideo.src = '';
+    fileInput.value = '';
+    document.getElementById('gradcam-section').style.display = 'none';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+# ====================================================================
+# Face-Detection-Based Authentication System — Dependencies
+# ====================================================================
+
+# Core Web Framework
+flask==3.1.1
+flask-socketio==5.5.1
+flask-login==0.6.3
+eventlet==0.39.1
+python-engineio==4.12.1
+python-socketio==5.13.0
+
+# ML & Computer Vision
+opencv-python==4.11.0.86
+numpy==1.26.4
+scipy==1.15.2
+
+# Deep Learning (CPU-only for laptop compatibility)
+tensorflow-cpu>=2.19.0
+
+# Image Processing
+Pillow==11.2.1
+
+# Face Landmarks (liveness + recognition fallback)
+mediapipe>=0.10.9
+
+# Security
+bcrypt==4.3.0
+
+# Visualization & Training
+matplotlib>=3.8.0
+
+# Utilities
+python-dotenv==1.1.0
+requests==2.32.3
