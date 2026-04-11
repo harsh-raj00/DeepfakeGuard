@@ -2,6 +2,9 @@
 
 > **Multi-layered biometric authentication** combining real-time face detection, recognition, liveness verification, and AI-powered deepfake detection to protect identity against spoofing attacks.
 
+### 🌐 [Live Demo: deepfakeguard-3ufd.onrender.com](https://deepfakeguard-3ufd.onrender.com)
+*(Note: As this is hosted on a free tier, it may take ~1 minute to wake up on the first visit. Please allow time for the ML models to load into memory).*
+
 **Project Title:** Face-Detection-Based Authentication System to Protect Against Deepfake Attacks  
 **Type:** Final Year Engineering Project  
 **Department:** Computer Science & Engineering  
