@@ -166,6 +166,12 @@ class DecisionEngine:
             return 0.0, False, "No recognition data yet.", "Unknown"
 
         recent = list(self.recognition_buffer)
+
+        # Require at least 3 recognition samples before declaring a match
+        # to prevent premature acceptance on noisy early frames
+        if len(recent) < 3:
+            return 0.0, False, "Collecting recognition data...", "Unknown"
+
         matches = [r for r in recent if r['matched']]
         match_rate = len(matches) / len(recent)
 
@@ -178,7 +184,8 @@ class DecisionEngine:
             username = "Unknown"
             score = 0.0
 
-        passed = match_rate > 0.5
+        # Require 60% match rate (stricter than 50%) to reduce false acceptance
+        passed = match_rate > 0.6
         reason = None if passed else "Face does not match any registered user."
         return score, passed, reason, username
 
@@ -228,8 +235,8 @@ class DecisionEngine:
         fake_count = sum(1 for d in recent if not d['is_real'])
         fake_rate = fake_count / len(recent)
 
-        # Apply fake rate penalty
-        score = avg_real_conf * (1.0 - fake_rate * 0.3)
+        # Apply fake rate penalty (gentle — heuristics naturally oscillate frame-to-frame)
+        score = avg_real_conf * (1.0 - fake_rate * 0.15)
 
         passed = avg_real_conf >= config.DEEPFAKE_REAL_THRESHOLD
         reason = None
@@ -251,13 +258,13 @@ class DecisionEngine:
         alert_type = None
         severity = "NONE"
 
-        # Check deepfake attack
+        # Check deepfake attack (raised thresholds — only flag truly extreme scores)
         df_score = scores.get('deepfake', {}).get('score', 1.0)
-        if df_score < 0.4:
+        if df_score < 0.30:
             alert = True
             alert_type = "DEEPFAKE_DETECTED"
             severity = "CRITICAL"
-        elif df_score < 0.6:
+        elif df_score < 0.50:
             alert = True
             alert_type = "SUSPICIOUS_FACE"
             severity = "HIGH"

@@ -74,28 +74,46 @@ class FaceRecognizer:
             tolerance (float): Maximum distance for a positive match.
                               Lower = stricter. Defaults to config value.
         """
-        self.tolerance = tolerance or config.FACE_RECOGNITION_TOLERANCE
         self.known_encodings = {}  # {username: [list of encoding vectors]}
         self.encodings_dir = config.ENCODINGS_DIR
         self._lock = Lock()
+
+        # ── Matching mode: cosine similarity vs L2 distance ──
+        # dlib produces 128-d encodings where L2 < 0.6 = match.
+        # HOG produces 8100-d L2-normalized vectors where L2 distances are
+        # always 0.5–0.8 even for the SAME face, making L2 useless.
+        # For HOG, we use cosine similarity (0–1, higher = better match).
+        self.use_cosine = not FACE_RECOGNITION_AVAILABLE
+        if FACE_RECOGNITION_AVAILABLE:
+            self.tolerance = tolerance or config.FACE_RECOGNITION_TOLERANCE
+            self.cosine_threshold = 0.0  # unused
+        else:
+            self.tolerance = 1.0  # unused for cosine mode
+            self.cosine_threshold = 0.75  # cosine similarity >= 0.75 = match
 
         # ── MediaPipe FaceMesh for fallback recognition ──
         self._face_mesh = None
         if not FACE_RECOGNITION_AVAILABLE and MEDIAPIPE_AVAILABLE:
             try:
-                import mediapipe.python.solutions.face_mesh as mp_face_mesh
-                self._face_mesh = mp_face_mesh.FaceMesh(
+                # Use the standard mp.solutions path (same as liveness_detector)
+                self._face_mesh = mp.solutions.face_mesh.FaceMesh(
                     static_image_mode=True,
                     max_num_faces=1,
                     refine_landmarks=True,
                     min_detection_confidence=0.5
                 )
                 print("[INFO] Face Recognition: Using MediaPipe + HOG encoding.")
+                self.cosine_threshold = 0.80  # Geometry+HOG is more discriminative
             except Exception as e:
                 print(f"[WARNING] MediaPipe face_mesh unavailable for recognition: {e}")
-            
-            # Use higher tolerance for HOG/MediaPipe encoding (different scale)
-            self.tolerance = 0.45
+                print("[WARNING] Falling back to HOG-only mode (reduced accuracy).")
+                self.cosine_threshold = 0.75  # HOG-only needs more leniency
+        elif not FACE_RECOGNITION_AVAILABLE:
+            self.cosine_threshold = 0.75
+            print("[WARNING] HOG-only mode active. Using cosine similarity >= 0.75.")
+
+        print(f"[INFO] Face Recognition mode: {'dlib' if FACE_RECOGNITION_AVAILABLE else 'HOG-cosine'}, "
+              f"threshold: {self.tolerance if FACE_RECOGNITION_AVAILABLE else self.cosine_threshold}")
 
         # Load any previously stored encodings
         self._load_all_encodings()
@@ -217,42 +235,56 @@ class FaceRecognizer:
 
         return combined
 
+    @staticmethod
+    def _cosine_similarity(a, b):
+        """Compute cosine similarity between two vectors. Returns 0-1."""
+        norm_a = np.linalg.norm(a)
+        norm_b = np.linalg.norm(b)
+        if norm_a == 0 or norm_b == 0:
+            return 0.0
+        return float(np.dot(a, b) / (norm_a * norm_b))
+
     def _hog_encoding(self, face_image, size=196):
         """
         Generate HOG-based encoding from face image.
-        This is deterministic — same face, same lighting → same descriptor.
+        Includes face-centering and padding to stabilize against
+        bounding box jitter from the Haar cascade detector.
         """
         gray = cv2.cvtColor(face_image, cv2.COLOR_BGR2GRAY)
-        gray = cv2.resize(gray, (64, 64))
 
-        # Apply histogram equalization for lighting invariance
-        gray = cv2.equalizeHist(gray)
+        # ── Stabilize the crop: add 10% padding and center the face ──
+        # This reduces sensitivity to Haar cascade bounding box jitter
+        h, w = gray.shape[:2]
+        pad_x = int(w * 0.10)
+        pad_y = int(h * 0.10)
+        # Crop inward to remove background edges that vary between frames
+        crop_gray = gray[pad_y:h - pad_y, pad_x:w - pad_x]
+        if crop_gray.shape[0] < 20 or crop_gray.shape[1] < 20:
+            crop_gray = gray  # fallback if face is too small
+
+        gray = cv2.resize(crop_gray, (128, 128))
+
+        # Apply CLAHE for better lighting invariance than basic equalizeHist
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        gray = clahe.apply(gray)
+
+        # ── Apply Gaussian blur to reduce noise sensitivity ──
+        gray = cv2.GaussianBlur(gray, (3, 3), 0)
 
         # Compute HOG descriptor using OpenCV
-        # We use a coarse grid (32x32 blocks, 16x16 cells) to provide shift-invariant
-        # spatial robustness, preventing small facial movements from ruining the match.
-        win_size = (64, 64)
-        block_size = (32, 32)
-        block_stride = (16, 16)
-        cell_size = (16, 16)
+        win_size = (128, 128)
+        block_size = (16, 16)
+        block_stride = (8, 8)
+        cell_size = (8, 8)
         nbins = 9
 
         hog = cv2.HOGDescriptor(win_size, block_size, block_stride, cell_size, nbins)
         descriptor = hog.compute(gray)
 
         if descriptor is None:
-            return np.zeros(size, dtype=np.float64)
+            return np.zeros(8100, dtype=np.float64)
 
         descriptor = descriptor.flatten()
-
-        # Without reduction, we get much more discriminative power.
-        # But if the caller explicitly requires a specific small size padding/truncating:
-        # We will just return the full descriptor here to preserve spatial information,
-        # unless size is provided just as a suggestion. (We will return full descriptor mostly).
-        
-        # If we need a specific size and length > size, we can take the first 'size' elements
-        # or just return the whole thing. The downstream logic can handle any consistent length.
-        # So we ignore the 'size' reduction to preserve HOG fidelity.
 
         # L2 normalize
         norm = np.linalg.norm(descriptor)
@@ -304,6 +336,7 @@ class FaceRecognizer:
     def recognize_face(self, face_image):
         """
         Identify a face by comparing against all stored encodings.
+        Uses cosine similarity for HOG mode, L2 distance for dlib mode.
 
         Args:
             face_image (np.ndarray): Cropped face image (BGR).
@@ -321,36 +354,56 @@ class FaceRecognizer:
             }
 
         best_match = None
-        best_distance = float('inf')
+        best_score = -1.0 if self.use_cosine else float('inf')
 
         for username, stored_encodings in self.known_encodings.items():
+            scores = []
             for stored_enc in stored_encodings:
-                # Ensure same dimension before comparing
                 if len(encoding) != len(stored_enc):
                     continue
-                distance = np.linalg.norm(encoding - stored_enc)
-                if distance < best_distance:
-                    best_distance = distance
+                if self.use_cosine:
+                    scores.append(self._cosine_similarity(encoding, stored_enc))
+                else:
+                    scores.append(np.linalg.norm(encoding - stored_enc))
+
+            if not scores:
+                continue
+
+            scores.sort(reverse=self.use_cosine)  # Best first
+            top_k = min(3, len(scores))
+            avg_score = float(np.mean(scores[:top_k]))
+
+            if self.use_cosine:
+                if avg_score > best_score:
+                    best_score = avg_score
+                    best_match = username
+            else:
+                if avg_score < best_score:
+                    best_score = avg_score
                     best_match = username
 
-        if best_distance <= self.tolerance and best_match is not None:
+        if self.use_cosine:
+            matched = best_score >= self.cosine_threshold and best_match is not None
             return {
-                "matched": True,
-                "username": best_match,
-                "distance": float(best_distance),
-                "confidence": float(max(0, 1.0 - best_distance))
+                "matched": matched,
+                "username": best_match or "Unknown",
+                "distance": float(1.0 - best_score),  # Convert to distance for API compat
+                "confidence": float(max(0, best_score))
             }
         else:
+            matched = best_score <= self.tolerance and best_match is not None
             return {
-                "matched": False,
-                "username": "Unknown",
-                "distance": float(best_distance),
-                "confidence": float(max(0, 1.0 - best_distance))
+                "matched": matched,
+                "username": best_match or "Unknown",
+                "distance": float(best_score),
+                "confidence": float(max(0, 1.0 - best_score))
             }
 
     def verify_user(self, username, face_image):
         """
         Verify that a face belongs to a specific known user (1:1 matching).
+        Uses cosine similarity for HOG mode, L2 distance for dlib mode.
+        Includes anti-confusion margin check against other stored users.
 
         Args:
             username (str): The claimed identity to verify against.
@@ -376,28 +429,89 @@ class FaceRecognizer:
                 "message": "Could not generate face encoding."
             }
 
-        # Compare against this user's stored encodings only
-        distances = []
+        # Compare against this user's stored encodings
+        scores = []
         for stored in self.known_encodings[username]:
             if len(encoding) == len(stored):
-                distances.append(np.linalg.norm(encoding - stored))
+                if self.use_cosine:
+                    scores.append(self._cosine_similarity(encoding, stored))
+                else:
+                    scores.append(np.linalg.norm(encoding - stored))
 
-        if not distances:
+        if not scores:
             return {
                 "matched": False,
                 "distance": 1.0,
                 "confidence": 0.0,
-                "message": "Encoding dimension mismatch."
+                "message": "Encoding dimension mismatch — please re-register your face."
             }
 
-        min_distance = min(distances)
+        # Average of best-K scores for robust verification
+        scores.sort(reverse=self.use_cosine)  # Best first
+        top_k = min(3, len(scores))
+        avg_score = float(np.mean(scores[:top_k]))
+
+        # ── Majority vote ──
+        if self.use_cosine:
+            within_threshold = sum(1 for s in scores[:top_k] if s >= self.cosine_threshold)
+        else:
+            within_threshold = sum(1 for s in scores[:top_k] if s <= self.tolerance)
+        majority_needed = max(1, (top_k + 1) // 2)
+        majority_ok = within_threshold >= majority_needed
+
+        # ── Anti-confusion margin check ──
+        best_other_score = -1.0 if self.use_cosine else float('inf')
+        for other_user, other_encodings in self.known_encodings.items():
+            if other_user == username:
+                continue
+            for stored in other_encodings:
+                if len(encoding) == len(stored):
+                    if self.use_cosine:
+                        s = self._cosine_similarity(encoding, stored)
+                        best_other_score = max(best_other_score, s)
+                    else:
+                        d = np.linalg.norm(encoding - stored)
+                        best_other_score = min(best_other_score, d)
+
+        margin_ok = True
+        if self.use_cosine:
+            # For cosine: claimed user should score higher than any other user
+            if best_other_score > -1.0 and best_other_score >= avg_score:
+                margin_ok = False
+                print(f"[VERIFY] MARGIN FAIL: {username} cosine={avg_score:.4f}, "
+                      f"best_other_cosine={best_other_score:.4f}")
+        else:
+            # For L2: claimed user should have smaller distance
+            if best_other_score < float('inf'):
+                margin = best_other_score - avg_score
+                if margin < avg_score * 0.15:
+                    margin_ok = False
+                    print(f"[VERIFY] MARGIN FAIL: {username} avg_dist={avg_score:.4f}, "
+                          f"best_other={best_other_score:.4f}")
+
+        if self.use_cosine:
+            matched = avg_score >= self.cosine_threshold and majority_ok and margin_ok
+            distance_for_log = 1.0 - avg_score  # Convert for API compat
+            confidence = avg_score
+            print(f"[VERIFY] User={username}, cosine_sim={avg_score:.4f}, "
+                  f"threshold={self.cosine_threshold:.4f}, majority={within_threshold}/{top_k}, "
+                  f"margin_ok={margin_ok}, matched={matched}, "
+                  f"all_scores={[f'{s:.4f}' for s in scores]}")
+        else:
+            matched = avg_score <= self.tolerance and majority_ok and margin_ok
+            distance_for_log = avg_score
+            confidence = max(0, 1.0 - avg_score)
+            print(f"[VERIFY] User={username}, avg_dist={avg_score:.4f}, "
+                  f"tolerance={self.tolerance:.4f}, majority={within_threshold}/{top_k}, "
+                  f"margin_ok={margin_ok}, matched={matched}, "
+                  f"all_dists={[f'{s:.4f}' for s in scores]}")
 
         return {
-            "matched": min_distance <= self.tolerance,
+            "matched": matched,
             "username": username,
-            "distance": float(min_distance),
-            "confidence": float(max(0, 1.0 - min_distance)),
-            "message": "Match!" if min_distance <= self.tolerance else "No match."
+            "distance": float(distance_for_log),
+            "confidence": float(max(0, confidence)),
+            "message": "Match!" if matched else "No match."
         }
 
     def get_registered_users(self):

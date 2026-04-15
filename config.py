@@ -29,7 +29,8 @@ FACE_DETECTION_MODEL_PROTO = os.path.join(MODELS_DIR, "deploy.prototxt")
 FACE_DETECTION_MODEL_WEIGHTS = os.path.join(MODELS_DIR, "res10_300x300_ssd_iter_140000.caffemodel")
 
 # ── Face Recognition (dlib / face_recognition) ─────────────────────────────
-FACE_RECOGNITION_TOLERANCE = 0.45      # Max L2 distance for a match (lower = stricter)
+FACE_RECOGNITION_TOLERANCE = 0.40      # Max L2 distance for a match (lower = stricter, dlib)
+HOG_FACE_TOLERANCE = 0.28              # Max L2 distance for fallback HOG matching (tight for 8100-d full HOG)
 FACE_RECOGNITION_NUM_JITTERS = 1       # Number of re-samples for encoding (1 = fast)
 REGISTRATION_MIN_FRAMES = 5            # Min frames to capture during registration
 
@@ -43,8 +44,8 @@ SHAPE_PREDICTOR_PATH = os.path.join(MODELS_DIR, "shape_predictor_68_face_landmar
 # ── Deepfake Detection (MesoNet) ───────────────────────────────────────────
 DEEPFAKE_MODEL_PATH = os.path.join(MODELS_DIR, "mesonet.weights.h5")
 DEEPFAKE_INPUT_SIZE = (256, 256)       # MesoNet expected input size
-DEEPFAKE_REAL_THRESHOLD = 0.60        # Confidence >= this to classify as REAL
-DEEPFAKE_SUSPICIOUS_THRESHOLD = 0.40  # Between this and REAL = suspicious
+DEEPFAKE_REAL_THRESHOLD = 0.45        # Confidence >= this to classify as REAL (relaxed for heuristic-only mode)
+DEEPFAKE_SUSPICIOUS_THRESHOLD = 0.30  # Between this and REAL = suspicious
 
 # ── Decision Engine ─────────────────────────────────────────────────────────
 AUTH_WINDOW_FRAMES = 30                # Sliding window size (~1 sec at 30fps)

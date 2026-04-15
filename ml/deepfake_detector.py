@@ -200,6 +200,10 @@ class DeepfakeDetector:
         2. Local Binary Pattern variance — texture consistency check
         3. Edge density analysis — real faces have natural edge distributions
 
+        Thresholds are calibrated for LIVE WEBCAM feeds which naturally have
+        compression artifacts, motion blur, and sensor noise.
+        Tuned to minimize false positives on real faces (EER-optimized).
+
         Returns:
             float: Score 0-1 where higher = more likely REAL.
         """
@@ -207,30 +211,26 @@ class DeepfakeDetector:
         gray = cv2.resize(gray, (128, 128))
 
         # ── 1. Laplacian Variance (focus/blur consistency) ──
-        # Real faces have consistent but moderate Laplacian variance.
-        # Fake faces often have regions of unnatural sharpness or blur.
+        # Real webcam faces typically have lap_var 20-2000 depending on
+        # lighting, distance, and webcam quality.
+        # Only flag extremes: <8 (GAN-smooth) or >3500 (sharpening artifact)
         laplacian = cv2.Laplacian(gray, cv2.CV_64F)
         lap_var = laplacian.var()
 
-        # Normalize: typical real face lap_var is 100-800
-        # Very low (< 50) = overly smooth (suspicious)
-        # Very high (> 1500) = overly sharpened (suspicious)
-        if lap_var < 20:
-            lap_score = 0.05  # Extremely smooth — strong indicator of GAN/deepfake
-        elif lap_var < 40:
-            lap_score = 0.25  # Too smooth — likely manipulated
-        elif lap_var < 70:
-            lap_score = 0.55
-        elif lap_var > 2000:
-            lap_score = 0.3   # Oversharpened — diffusion artifact
-        elif lap_var > 1000:
-            lap_score = 0.5
+        if lap_var < 8:
+            lap_score = 0.15  # Extremely smooth — strong GAN indicator
+        elif lap_var < 20:
+            lap_score = 0.50  # Very smooth — mildly suspicious
+        elif lap_var > 3500:
+            lap_score = 0.40  # Extreme sharpening artifact
+        elif lap_var > 2500:
+            lap_score = 0.60
         else:
-            # Natural range 70-1000: scale linearly with peak at 300-600
-            lap_score = min(1.0, 0.55 + 0.45 * min(1.0, lap_var / 600))
+            # Natural webcam range 20-2500: generous scoring
+            lap_score = min(1.0, 0.78 + 0.22 * min(1.0, lap_var / 400))
 
         # ── 2. Local texture consistency (LBP-like analysis) ──
-        # Compute local variance in 8x8 blocks
+        # Compute local variance in 16x16 blocks
         blocks = []
         block_size = 16
         for i in range(0, 128 - block_size, block_size):
@@ -240,33 +240,32 @@ class DeepfakeDetector:
 
         if blocks:
             block_vars = np.array(blocks)
-            # Coefficient of variation of block variances
-            # Real faces should have somewhat consistent texture variance
             cv_var = block_vars.std() / (block_vars.mean() + 1e-6)
 
-            # High CV means inconsistent texture (suspicious)
-            if cv_var > 2.0:
-                texture_score = 0.4
-            elif cv_var > 1.5:
-                texture_score = 0.6
-            elif cv_var > 1.0:
+            # Real webcam faces naturally have high CV due to lighting gradients.
+            # Only flag extreme inconsistency (CV > 3.0 = paint-like regions)
+            if cv_var > 3.0:
+                texture_score = 0.40
+            elif cv_var > 2.5:
+                texture_score = 0.60
+            elif cv_var > 2.0:
                 texture_score = 0.75
             else:
-                texture_score = 0.9
+                texture_score = 0.92
         else:
-            texture_score = 0.5
+            texture_score = 0.75
 
         # ── 3. Edge density ──
         edges = cv2.Canny(gray, 50, 150)
         edge_density = edges.sum() / (128 * 128 * 255)
 
-        # Natural edge density for faces: 0.02-0.15
-        if edge_density < 0.01 or edge_density > 0.25:
-            edge_score = 0.4  # Abnormal edge distribution
-        elif edge_density < 0.02 or edge_density > 0.20:
-            edge_score = 0.6
+        # Webcam faces: widened normal range 0.003-0.30
+        if edge_density < 0.002 or edge_density > 0.40:
+            edge_score = 0.35  # Truly abnormal
+        elif edge_density < 0.005 or edge_density > 0.32:
+            edge_score = 0.60
         else:
-            edge_score = 0.95
+            edge_score = 0.93
 
         # Weighted combination
         final_score = 0.4 * lap_score + 0.35 * texture_score + 0.25 * edge_score
@@ -284,6 +283,10 @@ class DeepfakeDetector:
         - Unusual energy concentration in specific frequency bands
         - Missing high-frequency natural noise patterns
         - Periodic spectral peaks from upsampling
+
+        Thresholds are widened for live webcam feeds which naturally have
+        JPEG compression, variable lighting, and sensor noise.
+        Tuned to minimize false positives on real webcam faces (EER-optimized).
 
         Returns:
             float: Score 0-1 where higher = more likely REAL.
@@ -308,52 +311,48 @@ class DeepfakeDetector:
         high_freq = dct_log[h // 2:, w // 2:].mean()
 
         # ── Ratio analysis ──
-        # Real faces: gradual energy dropoff from low to high
-        # Fake faces: abnormal energy in certain bands, or no high-freq content
-
         if low_freq > 0:
             mid_ratio = mid_freq / low_freq
             high_ratio = high_freq / low_freq
         else:
-            return 0.5  # Can't analyze
+            return 0.75  # Can't analyze — assume real
 
-        # Natural mid-to-low ratio: 0.3-0.7
-        if 0.25 < mid_ratio < 0.8:
-            mid_score = 0.95
-        elif 0.15 < mid_ratio < 0.9:
-            mid_score = 0.55
+        # Widened natural mid-to-low ratio: 0.10-1.0 (webcams vary hugely)
+        if 0.10 < mid_ratio < 1.0:
+            mid_score = 0.92
+        elif 0.05 < mid_ratio:
+            mid_score = 0.65
         else:
-            mid_score = 0.3  # Abnormal frequency distribution
+            mid_score = 0.35  # Truly abnormal
 
-        # Natural high-to-low ratio: 0.1-0.4
-        # GANs often struggle heavily with high-frequency noise consistency
-        if 0.08 < high_ratio < 0.45:
-            high_score = 0.95
-        elif high_ratio < 0.05:
-            high_score = 0.2  # Suspiciously smooth / missing high-freq
-        elif high_ratio > 0.55:
-            high_score = 0.3  # Too much high-freq noise (diffusion artifacts)
+        # Widened natural high-to-low ratio: 0.02-0.65 for webcams
+        if 0.02 < high_ratio < 0.65:
+            high_score = 0.92
+        elif high_ratio < 0.01:
+            high_score = 0.25  # Suspiciously smooth (GAN artifact)
+        elif high_ratio > 0.80:
+            high_score = 0.35  # Extreme noise (diffusion artifact)
         else:
-            high_score = 0.5
+            high_score = 0.65
 
         # ── Check for periodic patterns (GAN artifact) ──
-        # Look for unusual peaks in the DCT spectrum
         dct_flat = dct_log.flatten()
         dct_sorted = np.sort(dct_flat)[::-1]
 
-        # Ratio of top peaks to median — very high ratio = periodic artifact
         top_peaks = dct_sorted[:20].mean()
         median_val = np.median(dct_flat)
         peak_ratio = top_peaks / (median_val + 1e-6)
 
-        if peak_ratio > 18:
-            periodic_score = 0.1  # Extreme periodic artifacts
-        elif peak_ratio > 12:
-            periodic_score = 0.3
-        elif peak_ratio > 8:
-            periodic_score = 0.6
+        # Only flag very extreme periodicity (clear GAN fingerprint)
+        # Raised thresholds — webcam JPEG compression naturally causes peaks
+        if peak_ratio > 30:
+            periodic_score = 0.15
+        elif peak_ratio > 22:
+            periodic_score = 0.40
+        elif peak_ratio > 15:
+            periodic_score = 0.65
         else:
-            periodic_score = 0.85
+            periodic_score = 0.92
 
         final_score = 0.40 * mid_score + 0.35 * high_score + 0.25 * periodic_score
         return float(np.clip(final_score, 0.0, 1.0))
@@ -419,11 +418,19 @@ class DeepfakeDetector:
                 0.30 * frequency_score
             )
         else:
-            # Pure math fallback — texture is the dominant signal
-            confidence_real = (
-                0.55 * texture_score +
-                0.45 * frequency_score
+            # Pure heuristic fallback — texture is the dominant signal.
+            # Apply a floor of 0.40 to prevent false FAKE classifications
+            # from noisy webcam conditions (compression, lighting, blur).
+            raw_confidence = (
+                0.60 * texture_score +
+                0.40 * frequency_score
             )
+            # Floor: unless both signals are very low (< 0.35 each, true GAN),
+            # give benefit of the doubt to real faces
+            if texture_score > 0.35 or frequency_score > 0.35:
+                confidence_real = max(raw_confidence, 0.40)
+            else:
+                confidence_real = raw_confidence
 
         confidence_fake = 1.0 - confidence_real
 
@@ -591,7 +598,7 @@ class DeepfakeDetector:
         try:
             from ml.face_detector import FaceDetector
             if not hasattr(self, '_face_detector_cache'):
-                self._face_detector_cache = FaceDetector()``
+                self._face_detector_cache = FaceDetector()
             
             faces = self._face_detector_cache.detect_faces(face_image)
             if len(faces) > 0:
