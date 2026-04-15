@@ -181,9 +181,11 @@ def _handle_registration_frame_inner(data):
         return
 
     state['frame_count'] += 1
+    logger.debug(f"[Registration] Frame {state['frame_count']} received and decoded. Shape: {frame.shape}")
 
     # Detect faces
     faces = face_detector.detect_faces(frame)
+    logger.debug(f"[Registration] Frame {state['frame_count']}: {len(faces)} face(s) detected")
 
     if len(faces) == 0:
         # No face detected — send annotated frame back

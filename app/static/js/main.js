@@ -179,6 +179,8 @@ function startStreaming(eventName) {
         const frameData = canvas.toDataURL('image/jpeg', 0.6);
         const base64Data = frameData.replace(/^data:image\/jpeg;base64,/, '');
 
+        console.log(`[Stream] Emitting frame ${frameCount + 1}: ${base64Data.length} bytes to "${eventName}"`);
+        
         // Send frame to server
         socket.emit(eventName, {
             frame: base64Data,

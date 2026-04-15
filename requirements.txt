@@ -25,6 +25,11 @@ Pillow==11.2.1
 # Face Landmarks (liveness + recognition fallback)
 mediapipe>=0.10.9
 
+# Optional: face_recognition (dlib) — install if you want dlib-based encodings
+# Note: dlib can be difficult to build on Windows; consider using prebuilt wheels
+face_recognition>=1.3.0
+dlib>=19.24.0
+
 # Security
 bcrypt==4.3.0
 

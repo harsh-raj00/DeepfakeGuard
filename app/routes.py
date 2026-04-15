@@ -394,14 +394,32 @@ def api_predict_video():
                     scale = 512 / max(h, w)
                     frame = cv2.resize(frame, (int(w * scale), int(h * scale)))
 
-                result = detector.analyze_face(frame)
-                frame_results.append({
-                    'frame_number': frame_idx + 1,
-                    'timestamp': round(frame_idx / fps, 2),
-                    'is_real': result.get('is_real', False),
-                    'confidence_real': round(result.get('confidence_real', 0.0), 4),
-                    'label': result.get('label', 'UNKNOWN')
-                })
+                # Use the global detector cache from api_predict_image to save memory
+                from ml.face_detector import FaceDetector
+                if not hasattr(api_predict_video, '_face_detector'):
+                    api_predict_video._face_detector = FaceDetector()
+                
+                faces = api_predict_video._face_detector.detect_faces(frame)
+                
+                if len(faces) == 0:
+                    frame_results.append({
+                        'frame_number': frame_idx + 1,
+                        'timestamp': round(frame_idx / fps, 2),
+                        'is_real': False,
+                        'confidence_real': 0.0,
+                        'label': 'NO_FACE'
+                    })
+                else:
+                    face_crop = faces[0]['roi']
+                    result = detector.analyze_face(face_crop)
+                    frame_results.append({
+                        'frame_number': frame_idx + 1,
+                        'timestamp': round(frame_idx / fps, 2),
+                        'is_real': result.get('is_real', False),
+                        'confidence_real': round(result.get('confidence_real', 0.0), 4),
+                        'label': result.get('label', 'UNKNOWN')
+                    })
+                    
                 sample_num += 1
 
             frame_idx += 1

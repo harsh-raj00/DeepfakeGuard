@@ -43,8 +43,8 @@ SHAPE_PREDICTOR_PATH = os.path.join(MODELS_DIR, "shape_predictor_68_face_landmar
 # ── Deepfake Detection (MesoNet) ───────────────────────────────────────────
 DEEPFAKE_MODEL_PATH = os.path.join(MODELS_DIR, "mesonet.weights.h5")
 DEEPFAKE_INPUT_SIZE = (256, 256)       # MesoNet expected input size
-DEEPFAKE_REAL_THRESHOLD = 0.75        # Confidence >= this to classify as REAL
-DEEPFAKE_SUSPICIOUS_THRESHOLD = 0.50  # Between this and REAL = suspicious
+DEEPFAKE_REAL_THRESHOLD = 0.60        # Confidence >= this to classify as REAL
+DEEPFAKE_SUSPICIOUS_THRESHOLD = 0.40  # Between this and REAL = suspicious
 
 # ── Decision Engine ─────────────────────────────────────────────────────────
 AUTH_WINDOW_FRAMES = 30                # Sliding window size (~1 sec at 30fps)

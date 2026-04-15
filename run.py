@@ -66,6 +66,11 @@ if __name__ == '__main__':
         print("   Or the system will try to start in limited mode.\n")
 
     print("=" * 60)
+    print("Pre-loading all ML models in main thread... This may take a moment.")
+    from app.socketio_events import get_ml_modules
+    get_ml_modules()
+    print("ML Models pre-loaded successfully!")
+    print("=" * 60)
 
     # ── Start the server ──
     socketio.run(

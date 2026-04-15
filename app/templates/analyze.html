@@ -215,9 +215,9 @@ function displayResult(data) {
 
     // Signal breakdown
     const signals = data.signals || {};
-    document.getElementById('sig-cnn').textContent = signals.cnn ? (signals.cnn * 100).toFixed(1) + '%' : '—';
-    document.getElementById('sig-texture').textContent = signals.texture ? (signals.texture * 100).toFixed(1) + '%' : '—';
-    document.getElementById('sig-frequency').textContent = signals.frequency ? (signals.frequency * 100).toFixed(1) + '%' : '—';
+    document.getElementById('sig-cnn').textContent = signals.mesonet !== undefined ? (signals.mesonet * 100).toFixed(1) + '%' : '—';
+    document.getElementById('sig-texture').textContent = signals.texture !== undefined ? (signals.texture * 100).toFixed(1) + '%' : '—';
+    document.getElementById('sig-frequency').textContent = signals.frequency !== undefined ? (signals.frequency * 100).toFixed(1) + '%' : '—';
 
     // Grad-CAM
     if (data.gradcam_base64) {

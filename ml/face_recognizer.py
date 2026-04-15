@@ -21,12 +21,29 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 
 # ── Try face_recognition (dlib-based) first, fall back to MediaPipe ─────────
+import sys
+
+FACE_RECOGNITION_AVAILABLE = False
+FACE_RECOGNITION_MODELS_AVAILABLE = False
+
+# We must prevent face_recognition from permanently closing sys.stdin if its internal imports fail
+_original_close = getattr(sys.stdin, 'close', None)
+if _original_close is not None:
+    sys.stdin.close = lambda: None
+
 try:
     import face_recognition
+    import face_recognition_models  # type: ignore
     FACE_RECOGNITION_AVAILABLE = True
+    FACE_RECOGNITION_MODELS_AVAILABLE = True
     print("[INFO] face_recognition library available (dlib)")
-except ImportError:
+except (Exception, SystemExit) as e:
     FACE_RECOGNITION_AVAILABLE = False
+    FACE_RECOGNITION_MODELS_AVAILABLE = False
+    print(f"[WARNING] face_recognition failed to initialize: {e}")
+finally:
+    if _original_close is not None:
+        sys.stdin.close = _original_close
 
 # ── Try MediaPipe as fallback ───────────────────────────────────────────────
 MEDIAPIPE_AVAILABLE = False
@@ -65,15 +82,20 @@ class FaceRecognizer:
         # ── MediaPipe FaceMesh for fallback recognition ──
         self._face_mesh = None
         if not FACE_RECOGNITION_AVAILABLE and MEDIAPIPE_AVAILABLE:
-            self._face_mesh = mp.solutions.face_mesh.FaceMesh(
-                static_image_mode=True,
-                max_num_faces=1,
-                refine_landmarks=True,
-                min_detection_confidence=0.5
-            )
-            # Use higher tolerance for MediaPipe encoding (different scale)
+            try:
+                import mediapipe.python.solutions.face_mesh as mp_face_mesh
+                self._face_mesh = mp_face_mesh.FaceMesh(
+                    static_image_mode=True,
+                    max_num_faces=1,
+                    refine_landmarks=True,
+                    min_detection_confidence=0.5
+                )
+                print("[INFO] Face Recognition: Using MediaPipe + HOG encoding.")
+            except Exception as e:
+                print(f"[WARNING] MediaPipe face_mesh unavailable for recognition: {e}")
+            
+            # Use higher tolerance for HOG/MediaPipe encoding (different scale)
             self.tolerance = 0.45
-            print("[INFO] Face Recognition: Using MediaPipe + HOG encoding.")
 
         # Load any previously stored encodings
         self._load_all_encodings()
@@ -128,25 +150,27 @@ class FaceRecognizer:
     def _generate_mediapipe_encoding(self, face_image):
         """
         Generate a deterministic face encoding using:
-        1. MediaPipe FaceMesh landmark geometry (inter-landmark distances)
+        1. MediaPipe FaceMesh landmark geometry (inter-landmark distances) if available
         2. HOG (Histogram of Oriented Gradients) from the face region
 
         Returns a combined 196-d vector that is consistent for the same face.
         """
-        if self._face_mesh is None:
-            return None
-
         # Resize to standard size for consistency
         face_resized = cv2.resize(face_image, (128, 128))
         rgb_face = cv2.cvtColor(face_resized, cv2.COLOR_BGR2RGB)
+
+        if self._face_mesh is None:
+            # FALLBACK FOR PYTHON 3.13: Use HOG-only encoding if MediaPipe fails.
+            hog_desc = self._hog_encoding(face_resized, size=196)
+            return hog_desc
 
         # ── 1. Get MediaPipe landmarks ──
         with self._lock:
             results = self._face_mesh.process(rgb_face)
 
-        if not results.multi_face_landmarks:
+        if not results or not results.multi_face_landmarks:
             # If no face mesh detected, use HOG only
-            return self._hog_encoding(face_resized)
+            return self._hog_encoding(face_resized, size=196)
 
         landmarks = results.multi_face_landmarks[0]
         coords = np.array([(lm.x, lm.y, lm.z) for lm in landmarks.landmark])
@@ -205,10 +229,12 @@ class FaceRecognizer:
         gray = cv2.equalizeHist(gray)
 
         # Compute HOG descriptor using OpenCV
+        # We use a coarse grid (32x32 blocks, 16x16 cells) to provide shift-invariant
+        # spatial robustness, preventing small facial movements from ruining the match.
         win_size = (64, 64)
-        block_size = (16, 16)
-        block_stride = (8, 8)
-        cell_size = (8, 8)
+        block_size = (32, 32)
+        block_stride = (16, 16)
+        cell_size = (16, 16)
         nbins = 9
 
         hog = cv2.HOGDescriptor(win_size, block_size, block_stride, cell_size, nbins)
@@ -219,26 +245,21 @@ class FaceRecognizer:
 
         descriptor = descriptor.flatten()
 
-        # Reduce dimensionality by averaging blocks
-        if len(descriptor) > size:
-            # Chunk and average
-            chunk_size = len(descriptor) // size
-            reduced = np.array([
-                np.mean(descriptor[i * chunk_size:(i + 1) * chunk_size])
-                for i in range(size)
-            ])
-            descriptor = reduced
-
-        # Pad if needed
-        if len(descriptor) < size:
-            descriptor = np.pad(descriptor, (0, size - len(descriptor)))
+        # Without reduction, we get much more discriminative power.
+        # But if the caller explicitly requires a specific small size padding/truncating:
+        # We will just return the full descriptor here to preserve spatial information,
+        # unless size is provided just as a suggestion. (We will return full descriptor mostly).
+        
+        # If we need a specific size and length > size, we can take the first 'size' elements
+        # or just return the whole thing. The downstream logic can handle any consistent length.
+        # So we ignore the 'size' reduction to preserve HOG fidelity.
 
         # L2 normalize
         norm = np.linalg.norm(descriptor)
         if norm > 0:
             descriptor = descriptor / norm
 
-        return descriptor[:size].astype(np.float64)
+        return descriptor.astype(np.float64)
 
     def register_user(self, username, face_images):
         """
@@ -373,6 +394,7 @@ class FaceRecognizer:
 
         return {
             "matched": min_distance <= self.tolerance,
+            "username": username,
             "distance": float(min_distance),
             "confidence": float(max(0, 1.0 - min_distance)),
             "message": "Match!" if min_distance <= self.tolerance else "No match."

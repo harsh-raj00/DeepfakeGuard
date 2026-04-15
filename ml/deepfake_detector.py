@@ -25,7 +25,7 @@ import config
 try:
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TF warnings
     import tensorflow as tf
-    from tensorflow.keras import layers, models, optimizers
+    from keras import layers, models, optimizers
     TF_AVAILABLE = True
 except ImportError:
     TF_AVAILABLE = False
@@ -47,38 +47,36 @@ def build_meso4_model(input_shape=(256, 256, 3)):
     Returns:
         tf.keras.Model: Compiled Meso4 model.
     """
-    if not TF_AVAILABLE:
-        return None
+    inputs = layers.Input(shape=input_shape)
 
-    model = models.Sequential([
-        # ── Block 1: 8 filters ──
-        layers.Conv2D(8, (3, 3), padding='same', activation='relu',
-                     input_shape=input_shape),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D(pool_size=(2, 2), padding='same'),
+    # ── Block 1: 8 filters ──
+    x = layers.Conv2D(8, (3, 3), padding='same', activation='relu')(inputs)
+    x = layers.BatchNormalization()(x)
+    x = layers.MaxPooling2D(pool_size=(2, 2), padding='same')(x)
 
-        # ── Block 2: 8 filters ──
-        layers.Conv2D(8, (5, 5), padding='same', activation='relu'),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D(pool_size=(2, 2), padding='same'),
+    # ── Block 2: 8 filters ──
+    x = layers.Conv2D(8, (5, 5), padding='same', activation='relu')(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.MaxPooling2D(pool_size=(2, 2), padding='same')(x)
 
-        # ── Block 3: 16 filters ──
-        layers.Conv2D(16, (5, 5), padding='same', activation='relu'),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D(pool_size=(2, 2), padding='same'),
+    # ── Block 3: 16 filters ──
+    x = layers.Conv2D(16, (5, 5), padding='same', activation='relu')(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.MaxPooling2D(pool_size=(2, 2), padding='same')(x)
 
-        # ── Block 4: 16 filters ──
-        layers.Conv2D(16, (5, 5), padding='same', activation='relu'),
-        layers.BatchNormalization(),
-        layers.MaxPooling2D(pool_size=(4, 4), padding='same'),
+    # ── Block 4: 16 filters ──
+    x = layers.Conv2D(16, (5, 5), padding='same', activation='relu')(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.MaxPooling2D(pool_size=(4, 4), padding='same')(x)
 
-        # ── Classifier ──
-        layers.Flatten(),
-        layers.Dropout(0.5),
-        layers.Dense(16, activation='relu'),
-        layers.Dropout(0.5),
-        layers.Dense(1, activation='sigmoid')  # 0 = FAKE, 1 = REAL
-    ])
+    # ── Classifier ──
+    x = layers.Flatten()(x)
+    x = layers.Dropout(0.5)(x)
+    x = layers.Dense(16, activation='relu')(x)
+    x = layers.Dropout(0.5)(x)
+    outputs = layers.Dense(1, activation='sigmoid')(x)  # 0 = FAKE, 1 = REAL
+
+    model = models.Model(inputs=inputs, outputs=outputs)
 
     model.compile(
         optimizer=optimizers.Adam(learning_rate=1e-3),
@@ -119,8 +117,22 @@ class DeepfakeDetector:
             if os.path.exists(weights_path):
                 try:
                     self.model.load_weights(weights_path)
-                    self.model_loaded = True
-                    print("[INFO] Deepfake Detection: MesoNet weights loaded.")
+                    # Validate weights are actually loaded properly by running a test prediction
+                    # If the model outputs near-identical scores for very different inputs,
+                    # the weights are corrupt/incompatible and CNN should be bypassed.
+                    test_real = np.ones((1, self.input_size[0], self.input_size[1], 3), dtype=np.float32)
+                    test_fake = np.zeros((1, self.input_size[0], self.input_size[1], 3), dtype=np.float32)
+                    pred_real = float(self.model.predict(test_real, verbose=0)[0][0])
+                    pred_fake = float(self.model.predict(test_fake, verbose=0)[0][0])
+                    score_diff = abs(pred_real - pred_fake)
+                    if score_diff < 0.05:
+                        print(f"[WARNING] MesoNet weights appear miscalibrated (diff={score_diff:.4f}). "
+                              f"Disabling CNN — using texture+frequency fallback only.")
+                        self.model_loaded = False
+                        self.model = None
+                    else:
+                        self.model_loaded = True
+                        print("[INFO] Deepfake Detection: MesoNet weights loaded and validated.")
                 except Exception as e:
                     print(f"[WARNING] Could not load MesoNet weights: {e}")
                     print("[INFO] Using texture+frequency analysis (no CNN).")
@@ -203,17 +215,19 @@ class DeepfakeDetector:
         # Normalize: typical real face lap_var is 100-800
         # Very low (< 50) = overly smooth (suspicious)
         # Very high (> 1500) = overly sharpened (suspicious)
-        if lap_var < 30:
-            lap_score = 0.3  # Too smooth — likely manipulated
-        elif lap_var < 50:
+        if lap_var < 20:
+            lap_score = 0.05  # Extremely smooth — strong indicator of GAN/deepfake
+        elif lap_var < 40:
+            lap_score = 0.25  # Too smooth — likely manipulated
+        elif lap_var < 70:
+            lap_score = 0.55
+        elif lap_var > 2000:
+            lap_score = 0.3   # Oversharpened — diffusion artifact
+        elif lap_var > 1000:
             lap_score = 0.5
-        elif lap_var > 1500:
-            lap_score = 0.4  # Oversharpened
-        elif lap_var > 800:
-            lap_score = 0.6
         else:
-            lap_score = 0.8 + 0.2 * min(1.0, lap_var / 500)
-            lap_score = min(1.0, lap_score)
+            # Natural range 70-1000: scale linearly with peak at 300-600
+            lap_score = min(1.0, 0.55 + 0.45 * min(1.0, lap_var / 600))
 
         # ── 2. Local texture consistency (LBP-like analysis) ──
         # Compute local variance in 8x8 blocks
@@ -252,7 +266,7 @@ class DeepfakeDetector:
         elif edge_density < 0.02 or edge_density > 0.20:
             edge_score = 0.6
         else:
-            edge_score = 0.85
+            edge_score = 0.95
 
         # Weighted combination
         final_score = 0.4 * lap_score + 0.35 * texture_score + 0.25 * edge_score
@@ -305,21 +319,22 @@ class DeepfakeDetector:
 
         # Natural mid-to-low ratio: 0.3-0.7
         if 0.25 < mid_ratio < 0.8:
-            mid_score = 0.85
+            mid_score = 0.95
         elif 0.15 < mid_ratio < 0.9:
-            mid_score = 0.65
+            mid_score = 0.55
         else:
-            mid_score = 0.4  # Abnormal frequency distribution
+            mid_score = 0.3  # Abnormal frequency distribution
 
         # Natural high-to-low ratio: 0.1-0.4
-        if 0.05 < high_ratio < 0.5:
-            high_score = 0.85
-        elif high_ratio < 0.03:
-            high_score = 0.3  # Suspiciously missing high-freq (oversmoothed)
-        elif high_ratio > 0.6:
-            high_score = 0.4  # Too much high-freq noise
+        # GANs often struggle heavily with high-frequency noise consistency
+        if 0.08 < high_ratio < 0.45:
+            high_score = 0.95
+        elif high_ratio < 0.05:
+            high_score = 0.2  # Suspiciously smooth / missing high-freq
+        elif high_ratio > 0.55:
+            high_score = 0.3  # Too much high-freq noise (diffusion artifacts)
         else:
-            high_score = 0.6
+            high_score = 0.5
 
         # ── Check for periodic patterns (GAN artifact) ──
         # Look for unusual peaks in the DCT spectrum
@@ -327,18 +342,20 @@ class DeepfakeDetector:
         dct_sorted = np.sort(dct_flat)[::-1]
 
         # Ratio of top peaks to median — very high ratio = periodic artifact
-        top_peaks = dct_sorted[:10].mean()
+        top_peaks = dct_sorted[:20].mean()
         median_val = np.median(dct_flat)
         peak_ratio = top_peaks / (median_val + 1e-6)
 
-        if peak_ratio > 15:
-            periodic_score = 0.4  # Strong periodic artifacts
-        elif peak_ratio > 10:
+        if peak_ratio > 18:
+            periodic_score = 0.1  # Extreme periodic artifacts
+        elif peak_ratio > 12:
+            periodic_score = 0.3
+        elif peak_ratio > 8:
             periodic_score = 0.6
         else:
             periodic_score = 0.85
 
-        final_score = 0.35 * mid_score + 0.35 * high_score + 0.30 * periodic_score
+        final_score = 0.40 * mid_score + 0.35 * high_score + 0.25 * periodic_score
         return float(np.clip(final_score, 0.0, 1.0))
 
     # ═══════════════════════════════════════════════════════════════════════
@@ -378,32 +395,34 @@ class DeepfakeDetector:
 
         signals = {}
 
-        # ── Signal 1: MesoNet ──
+        # ── Signal 1: MesoNet (only used if weights validated on startup) ──
         mesonet_score = self._mesonet_score(face_image)
         if mesonet_score is not None:
-            signals['mesonet'] = mesonet_score
+            signals['mesonet'] = float(mesonet_score)
 
-        # ── Signal 2: Texture ──
+        # ── Signal 2: Texture Analysis ──
         texture_score = self._texture_score(face_image)
-        signals['texture'] = texture_score
+        signals['texture'] = float(texture_score)
 
-        # ── Signal 3: Frequency ──
+        # ── Signal 3: Frequency (DCT) Analysis ──
         frequency_score = self._frequency_score(face_image)
-        signals['frequency'] = frequency_score
+        signals['frequency'] = float(frequency_score)
 
         # ── Weighted Fusion ──
+        # Diagnostic showed texture (0.75 real vs 0.54 fake) and frequency
+        # (0.54 real vs 0.44 fake) are the only reliably discriminating signals.
+        # MesoNet is only included if it passed the startup validation check.
         if mesonet_score is not None:
-            # All three signals available
             confidence_real = (
-                0.50 * mesonet_score +
-                0.30 * texture_score +
-                0.20 * frequency_score
+                0.30 * mesonet_score +
+                0.40 * texture_score +
+                0.30 * frequency_score
             )
         else:
-            # Fallback: texture + frequency only
+            # Pure math fallback — texture is the dominant signal
             confidence_real = (
-                0.60 * texture_score +
-                0.40 * frequency_score
+                0.55 * texture_score +
+                0.45 * frequency_score
             )
 
         confidence_fake = 1.0 - confidence_real
@@ -494,7 +513,8 @@ class DeepfakeDetector:
                     self.model.output
                 ]
             )
-        except ValueError:
+        except Exception as e:
+            print(f"[WARNING] Grad-CAM generation failed: {e}")
             return None
 
         # Compute gradients
@@ -552,6 +572,7 @@ class DeepfakeDetector:
         """
         Predict whether a single image is real or fake.
         Convenience method for the web upload endpoint.
+        Automatically runs face detection to crop the face before analysis.
 
         Args:
             image_path_or_array: File path (str) or BGR numpy array.
@@ -566,11 +587,27 @@ class DeepfakeDetector:
         else:
             face_image = image_path_or_array
 
-        # Get main analysis
-        result = self.analyze_face(face_image)
+        # Automatically detect and crop face to ensure texture/frequency analysis is accurate
+        try:
+            from ml.face_detector import FaceDetector
+            if not hasattr(self, '_face_detector_cache'):
+                self._face_detector_cache = FaceDetector()
+            
+            faces = self._face_detector_cache.detect_faces(face_image)
+            if len(faces) > 0:
+                # Use the first detected face crop
+                processing_face = faces[0]['roi']
+            else:
+                # Reject images that do not contain any human faces
+                return {'error': 'No human face detected in the image. Please upload a clear photo of a face.'}
+        except Exception:
+            processing_face = face_image
+
+        # Get main analysis on the cropped face
+        result = self.analyze_face(processing_face)
 
         # Add Grad-CAM if model is available
-        gradcam = self.generate_gradcam(face_image)
+        gradcam = self.generate_gradcam(processing_face)
         if gradcam:
             result['gradcam_b64'] = gradcam['heatmap_b64']
             result['gradcam_label'] = gradcam['label']

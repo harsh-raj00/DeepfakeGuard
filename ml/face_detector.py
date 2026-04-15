@@ -19,42 +19,30 @@ import config
 
 class FaceDetector:
     """
-    Real-time face detector using OpenCV's DNN module.
-    Uses the SSD (Single Shot Detector) framework with a ResNet-10 backbone
-    trained on face data. Runs at 30+ FPS on CPU.
-
-    NOTE: OpenCV DNN net.forward() is NOT thread-safe. A Lock is used to
-    serialize concurrent inference calls from Flask-SocketIO threads.
+    Real-time face detector using OpenCV's Haar Cascade classifier.
+    Replaces the original SSD DNN approach to ensure true positives are
+    not rejected often, providing a robust initial matching step before deepfake classification.
     """
 
     def __init__(self, confidence_threshold=None):
         """
-        Initialize the face detector by loading the pre-trained model.
-
-        Args:
-            confidence_threshold (float): Minimum detection confidence (0-1).
-                                          Defaults to config value.
+        Initialize the face detector by loading the pre-trained Haar Cascade model.
         """
         self.confidence_threshold = confidence_threshold or config.FACE_DETECTION_CONFIDENCE
-        self._lock = Lock()  # Thread-safety for net.forward()
+        self._lock = Lock()  # Thread-safety 
 
-        # ── Load the pre-trained SSD model ──
-        proto_path = config.FACE_DETECTION_MODEL_PROTO
-        weights_path = config.FACE_DETECTION_MODEL_WEIGHTS
-
-        if not os.path.exists(proto_path) or not os.path.exists(weights_path):
-            raise FileNotFoundError(
-                f"Face detection model files not found.\n"
-                f"Expected:\n  {proto_path}\n  {weights_path}\n"
-                f"Run 'python scripts/download_models.py' to download them."
-            )
-
-        self.net = cv2.dnn.readNetFromCaffe(proto_path, weights_path)
-        print("[INFO] Face Detection model loaded successfully.")
+        # ── Load the Haar Cascade model ──
+        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        self.cascade = cv2.CascadeClassifier(cascade_path)
+        
+        if self.cascade.empty():
+            raise FileNotFoundError(f"Haar cascade model not found at {cascade_path}")
+            
+        print("[INFO] Haar Cascade Face Detection model loaded successfully.")
 
     def detect_faces(self, frame):
         """
-        Detect faces in a single frame.
+        Detect faces in a single frame using Haar cascade.
 
         Args:
             frame (np.ndarray): BGR image from webcam.
@@ -67,36 +55,44 @@ class FaceDetector:
         """
         (h, w) = frame.shape[:2]
         detections = []
+        
+        # Convert to grayscale for Haar cascade
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # ── Preprocess: create a blob from the input frame ──
-        # SSD expects 300x300 input with mean subtraction
-        blob = cv2.dnn.blobFromImage(
-            cv2.resize(frame, (300, 300)),  # Resize to 300x300
-            1.0,                             # Scale factor
-            (300, 300),                      # Spatial size
-            (104.0, 177.0, 123.0),          # Mean subtraction (BGR)
-            swapRB=False,                    # Already BGR
-            crop=False
-        )
-
-        # ── Forward pass through the network (thread-safe) ──
+        # ── Detect faces (thread-safe) ──
         with self._lock:
-            self.net.setInput(blob)
-            raw_detections = self.net.forward()
+            # outputRejectLevels allows us to extract pseudo-confidence weights
+            faces, rejectLevels, levelWeights = self.cascade.detectMultiScale3(
+                gray, 
+                scaleFactor=1.1, 
+                minNeighbors=4, 
+                minSize=(30, 30),
+                outputRejectLevels=True
+            )
+
+        if len(faces) == 0:
+            return detections
 
         # ── Process each detection ──
-        for i in range(raw_detections.shape[2]):
-            confidence = raw_detections[0, 0, i, 2]
+        for i, (startX, startY, boxW, boxH) in enumerate(faces):
+            if levelWeights is not None:
+                # Depending on OpenCV version, levelWeights is either a 1D array or 2D array of shape (N, 1)
+                try:
+                    weight = float(levelWeights[i][0])
+                except (IndexError, TypeError):
+                    weight = float(levelWeights[i])
+            else:
+                weight = 1.0
+            
+            # Map cascade weight to a pseudo-confidence [0, 1]
+            confidence = min(1.0, max(0.0, weight / 5.0))
 
-            # Filter out weak detections
-            if confidence < self.confidence_threshold:
+            if confidence < (self.confidence_threshold - 0.2):  # Slightly relax threshold for Haar
                 continue
 
-            # Scale bounding box back to frame dimensions
-            box = raw_detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
-
             # Clamp coordinates to frame boundaries
+            endX = startX + boxW
+            endY = startY + boxH
             startX = max(0, startX)
             startY = max(0, startY)
             endX = min(w, endX)
@@ -111,7 +107,7 @@ class FaceDetector:
 
             detections.append({
                 'box': (startX, startY, endX - startX, endY - startY),
-                'confidence': float(confidence),
+                'confidence': confidence,
                 'roi': face_roi
             })
 

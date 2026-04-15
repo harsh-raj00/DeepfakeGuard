@@ -1,0 +1,474 @@
+2026-04-14 00:03:26,690 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:08:48,546 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:44:40,324 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:44:45,755 [ERROR] FaceAuth - get_ml_modules:59 - Failed to load FaceRecognizer: No module named 'mediapipe.python'
+2026-04-14 00:44:45,872 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 00:44:46,133 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 00:46:35,943 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:46:39,809 [ERROR] FaceAuth - get_ml_modules:59 - Failed to load FaceRecognizer: No module named 'mediapipe.python'
+2026-04-14 00:46:39,861 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 00:46:40,029 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 00:46:41,362 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:46:44,987 [ERROR] FaceAuth - get_ml_modules:59 - Failed to load FaceRecognizer: No module named 'mediapipe.python'
+2026-04-14 00:46:45,067 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 00:46:45,253 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 00:48:50,389 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:48:54,157 [ERROR] FaceAuth - get_ml_modules:59 - Failed to load FaceRecognizer: No module named 'mediapipe.python'
+2026-04-14 00:48:54,214 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 00:48:54,373 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 00:48:55,595 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:48:59,230 [ERROR] FaceAuth - get_ml_modules:59 - Failed to load FaceRecognizer: No module named 'mediapipe.python'
+2026-04-14 00:48:59,291 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 00:48:59,511 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 00:49:53,932 [INFO] FaceAuth - handle_connect:97 - Client connected: cZy71WxePbDdBvI5AAAB
+2026-04-14 00:49:54,131 [INFO] FaceAuth - handle_start_registration:124 - Starting registration capture for: yash2134 (sid: session_v5q55vzp1)
+2026-04-14 00:49:54,293 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 1 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:54,473 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 1: 1 face(s) detected
+2026-04-14 00:49:54,528 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 2 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:54,622 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 2: 1 face(s) detected
+2026-04-14 00:49:54,639 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 3 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:54,691 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 3: 1 face(s) detected
+2026-04-14 00:49:54,776 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 4 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:54,840 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 4: 1 face(s) detected
+2026-04-14 00:49:54,916 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 5 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,018 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 5: 1 face(s) detected
+2026-04-14 00:49:55,141 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 6 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,217 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 6: 1 face(s) detected
+2026-04-14 00:49:55,280 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 7 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,359 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 7: 1 face(s) detected
+2026-04-14 00:49:55,393 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 8 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,489 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 8: 1 face(s) detected
+2026-04-14 00:49:55,517 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 9 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,567 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 9: 1 face(s) detected
+2026-04-14 00:49:55,647 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 10 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,734 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 10: 1 face(s) detected
+2026-04-14 00:49:55,780 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 11 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,834 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 11: 1 face(s) detected
+2026-04-14 00:49:55,893 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 12 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:55,951 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 12: 1 face(s) detected
+2026-04-14 00:49:56,025 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 13 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:56,093 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 13: 1 face(s) detected
+2026-04-14 00:49:56,141 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 14 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:56,216 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 14: 1 face(s) detected
+2026-04-14 00:49:56,272 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 15 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:49:56,363 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 15: 1 face(s) detected
+2026-04-14 00:49:56,365 [INFO] FaceAuth - _handle_registration_frame_inner:238 - Registration: captured 5 frames for yash2134
+2026-04-14 00:49:59,244 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: cZy71WxePbDdBvI5AAAB (reason: transport close)
+2026-04-14 00:50:11,765 [INFO] FaceAuth - handle_connect:97 - Client connected: TFdq37IPnVoILvtKAAAD
+2026-04-14 00:50:11,834 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: yash2134 (sid: session_kca1v41v7)
+2026-04-14 00:51:17,706 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: TFdq37IPnVoILvtKAAAD (reason: transport close)
+2026-04-14 00:51:44,345 [INFO] FaceAuth - handle_connect:97 - Client connected: ibOHZb7M-GF9skk5AAAF
+2026-04-14 00:51:44,754 [INFO] FaceAuth - handle_start_registration:124 - Starting registration capture for: stanmay (sid: session_fmoy2b2j2)
+2026-04-14 00:51:44,902 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 1 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:44,950 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 1: 1 face(s) detected
+2026-04-14 00:51:45,022 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 2 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,088 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 2: 1 face(s) detected
+2026-04-14 00:51:45,145 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 3 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,197 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 3: 1 face(s) detected
+2026-04-14 00:51:45,290 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 4 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,376 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 4: 1 face(s) detected
+2026-04-14 00:51:45,393 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 5 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,438 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 5: 1 face(s) detected
+2026-04-14 00:51:45,535 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 6 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,620 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 6: 1 face(s) detected
+2026-04-14 00:51:45,639 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 7 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,688 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 7: 1 face(s) detected
+2026-04-14 00:51:45,771 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 8 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,836 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 8: 1 face(s) detected
+2026-04-14 00:51:45,896 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 9 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:45,977 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 9: 1 face(s) detected
+2026-04-14 00:51:46,028 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 10 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,097 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 10: 1 face(s) detected
+2026-04-14 00:51:46,148 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 11 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,194 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 11: 1 face(s) detected
+2026-04-14 00:51:46,266 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 12 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,319 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 12: 0 face(s) detected
+2026-04-14 00:51:46,393 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 13 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,465 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 13: 0 face(s) detected
+2026-04-14 00:51:46,526 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 14 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,596 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 14: 1 face(s) detected
+2026-04-14 00:51:46,643 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 15 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,718 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 15: 1 face(s) detected
+2026-04-14 00:51:46,781 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 16 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,865 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 16: 1 face(s) detected
+2026-04-14 00:51:46,894 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 17 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:46,938 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 17: 1 face(s) detected
+2026-04-14 00:51:47,028 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 18 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:51:47,107 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 18: 1 face(s) detected
+2026-04-14 00:51:47,110 [INFO] FaceAuth - _handle_registration_frame_inner:238 - Registration: captured 5 frames for stanmay
+2026-04-14 00:51:50,006 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: ibOHZb7M-GF9skk5AAAF (reason: transport close)
+2026-04-14 00:52:17,091 [INFO] FaceAuth - handle_connect:97 - Client connected: Jr7fSfLxDfbAwv5EAAAH
+2026-04-14 00:52:17,204 [INFO] FaceAuth - handle_start_registration:124 - Starting registration capture for: tan (sid: session_4fb0s20qr)
+2026-04-14 00:52:17,350 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 1 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:17,438 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 1: 1 face(s) detected
+2026-04-14 00:52:17,474 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 2 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:17,551 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 2: 1 face(s) detected
+2026-04-14 00:52:17,595 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 3 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:17,659 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 3: 1 face(s) detected
+2026-04-14 00:52:17,729 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 4 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:17,775 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 4: 1 face(s) detected
+2026-04-14 00:52:17,846 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 5 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:17,930 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 5: 1 face(s) detected
+2026-04-14 00:52:17,974 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 6 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,033 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 6: 1 face(s) detected
+2026-04-14 00:52:18,110 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 7 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,208 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 7: 1 face(s) detected
+2026-04-14 00:52:18,221 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 8 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,265 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 8: 1 face(s) detected
+2026-04-14 00:52:18,347 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 9 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,390 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 9: 1 face(s) detected
+2026-04-14 00:52:18,485 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 10 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,575 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 10: 1 face(s) detected
+2026-04-14 00:52:18,593 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 11 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,643 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 11: 1 face(s) detected
+2026-04-14 00:52:18,726 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 12 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,816 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 12: 1 face(s) detected
+2026-04-14 00:52:18,839 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 13 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:18,910 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 13: 1 face(s) detected
+2026-04-14 00:52:18,972 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 14 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:19,047 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 14: 1 face(s) detected
+2026-04-14 00:52:19,104 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 15 received and decoded. Shape: (480, 640, 3)
+2026-04-14 00:52:19,166 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 15: 1 face(s) detected
+2026-04-14 00:52:19,169 [INFO] FaceAuth - _handle_registration_frame_inner:238 - Registration: captured 5 frames for tan
+2026-04-14 00:52:21,950 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: Jr7fSfLxDfbAwv5EAAAH (reason: transport close)
+2026-04-14 00:52:36,346 [INFO] FaceAuth - handle_connect:97 - Client connected: TkM5B9aXyKgSHa5oAAAJ
+2026-04-14 00:52:36,773 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: tan (sid: session_h5g6vemk1)
+2026-04-14 00:57:34,291 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 00:57:38,003 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 00:57:38,083 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 00:57:38,304 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 00:57:38,550 [INFO] FaceAuth - handle_connect:97 - Client connected: qaBwjGz_ve1zy1_iAAAB
+2026-04-14 00:59:38,566 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: qaBwjGz_ve1zy1_iAAAB (reason: ping timeout)
+2026-04-14 00:59:44,455 [INFO] FaceAuth - handle_connect:97 - Client connected: rw30sM4tBIrDBgRuAAAD
+2026-04-14 00:59:47,770 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: rw30sM4tBIrDBgRuAAAD (reason: transport close)
+2026-04-14 00:59:48,749 [INFO] FaceAuth - handle_connect:97 - Client connected: ahP5RnXmQDn_GpDjAAAF
+2026-04-14 00:59:49,134 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: tan (sid: session_tfffnn96z)
+2026-04-14 01:00:09,389 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: ahP5RnXmQDn_GpDjAAAF (reason: transport close)
+2026-04-14 01:00:42,471 [INFO] FaceAuth - handle_connect:97 - Client connected: olH5Df5QOgomgKDIAAAH
+2026-04-14 01:00:42,930 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: tan (sid: session_g3gj95aho)
+2026-04-14 01:01:39,954 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:01:43,716 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:01:43,791 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:01:43,947 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:01:45,195 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:01:52,002 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:01:52,155 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:01:52,556 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:01:54,858 [INFO] FaceAuth - handle_connect:97 - Client connected: HHep368bWAF3_CvUAAAC
+2026-04-14 01:01:55,140 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: tan (sid: session_3v38x9ydg)
+2026-04-14 01:01:59,101 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: HHep368bWAF3_CvUAAAC (reason: transport close)
+2026-04-14 01:02:00,038 [INFO] FaceAuth - handle_connect:97 - Client connected: 4pF4OirtxcgIGrMWAAAE
+2026-04-14 01:02:00,113 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: tan (sid: session_szscbz34b)
+2026-04-14 01:02:01,479 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: 4pF4OirtxcgIGrMWAAAE (reason: transport close)
+2026-04-14 01:02:44,183 [INFO] FaceAuth - handle_connect:97 - Client connected: kXIcVdldDoF6ZrG3AAAG
+2026-04-14 01:02:44,601 [INFO] FaceAuth - handle_start_registration:124 - Starting registration capture for: sexx (sid: session_fqooma0vg)
+2026-04-14 01:02:44,759 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 1 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:44,845 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 1: 1 face(s) detected
+2026-04-14 01:02:44,861 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 2 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:44,906 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 2: 1 face(s) detected
+2026-04-14 01:02:45,000 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 3 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,046 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 3: 1 face(s) detected
+2026-04-14 01:02:45,121 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 4 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,183 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 4: 1 face(s) detected
+2026-04-14 01:02:45,248 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 5 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,330 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 5: 1 face(s) detected
+2026-04-14 01:02:45,375 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 6 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,421 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 6: 1 face(s) detected
+2026-04-14 01:02:45,487 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 7 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,545 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 7: 1 face(s) detected
+2026-04-14 01:02:45,615 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 8 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,667 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 8: 1 face(s) detected
+2026-04-14 01:02:45,739 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 9 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,788 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 9: 1 face(s) detected
+2026-04-14 01:02:45,876 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 10 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:45,959 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 10: 1 face(s) detected
+2026-04-14 01:02:45,992 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 11 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:46,045 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 11: 1 face(s) detected
+2026-04-14 01:02:46,123 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 12 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:46,178 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 12: 1 face(s) detected
+2026-04-14 01:02:46,244 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 13 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:46,305 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 13: 1 face(s) detected
+2026-04-14 01:02:46,379 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 14 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:46,428 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 14: 1 face(s) detected
+2026-04-14 01:02:46,489 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 15 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:02:46,554 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 15: 1 face(s) detected
+2026-04-14 01:02:46,558 [INFO] FaceAuth - _handle_registration_frame_inner:238 - Registration: captured 5 frames for sexx
+2026-04-14 01:02:49,438 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: kXIcVdldDoF6ZrG3AAAG (reason: transport close)
+2026-04-14 01:03:00,014 [INFO] FaceAuth - handle_connect:97 - Client connected: lLjjMHu6HmzFjglzAAAI
+2026-04-14 01:03:00,139 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: sexx (sid: session_cptv5i9tv)
+2026-04-14 01:03:03,640 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: lLjjMHu6HmzFjglzAAAI (reason: transport close)
+2026-04-14 01:07:32,682 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:07:36,492 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:07:36,549 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:07:36,757 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:07:44,285 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:07:47,749 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:07:47,797 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:07:47,977 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:09:29,492 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:09:33,228 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:09:33,287 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:09:33,455 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:09:34,719 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:09:38,587 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:09:38,713 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:09:39,036 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:14:34,563 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:14:38,536 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:14:38,595 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:14:38,765 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:14:49,636 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:14:53,306 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:14:53,359 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:14:53,571 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:15:27,431 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:15:31,926 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:15:31,976 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:15:32,150 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:15:33,379 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:15:37,008 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:15:37,059 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:15:37,221 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:19:29,879 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:19:33,734 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:19:33,789 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:19:33,971 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:19:41,354 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:19:45,302 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:19:45,390 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:19:45,602 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:21:48,803 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:21:52,443 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:21:52,497 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:21:52,677 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:21:53,960 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:21:57,544 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:21:57,590 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:21:57,766 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:25:49,563 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:25:54,073 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:25:54,128 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:25:54,323 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:31:55,683 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:32:04,445 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:32:04,585 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:32:04,943 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:33:03,088 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:33:07,059 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:33:07,119 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:33:07,283 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:33:08,609 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:33:12,634 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:33:12,695 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:33:12,890 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:41:43,410 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:41:47,195 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:41:47,247 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:41:47,420 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:42:03,095 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:42:07,079 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:42:07,173 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:42:07,387 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:43:53,408 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:43:57,290 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:43:57,356 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:43:57,529 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:43:58,854 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:44:02,678 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:44:02,753 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:44:02,925 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:51:36,682 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:51:41,695 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:51:41,785 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:51:41,953 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:51:43,380 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 01:51:47,120 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 01:51:47,178 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 01:51:47,354 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 01:53:57,901 [INFO] FaceAuth - handle_connect:97 - Client connected: beN0Q6joBG9EDf8jAAAB
+2026-04-14 01:53:58,347 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: yash2134 (sid: session_v3ooq0k55)
+2026-04-14 01:54:17,079 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: beN0Q6joBG9EDf8jAAAB (reason: transport close)
+2026-04-14 01:54:37,336 [INFO] FaceAuth - handle_connect:97 - Client connected: sQ0hjfkAWL5Lq2u4AAAD
+2026-04-14 01:54:37,527 [INFO] FaceAuth - handle_start_registration:124 - Starting registration capture for: yash21342 (sid: session_vs25wsuwe)
+2026-04-14 01:54:37,676 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 1 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:37,757 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 1: 0 face(s) detected
+2026-04-14 01:54:37,795 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 2 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:37,844 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 2: 0 face(s) detected
+2026-04-14 01:54:37,924 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 3 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,002 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 3: 0 face(s) detected
+2026-04-14 01:54:38,036 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 4 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,094 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 4: 0 face(s) detected
+2026-04-14 01:54:38,181 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 5 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,269 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 5: 0 face(s) detected
+2026-04-14 01:54:38,286 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 6 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,330 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 6: 0 face(s) detected
+2026-04-14 01:54:38,423 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 7 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,474 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 7: 0 face(s) detected
+2026-04-14 01:54:38,541 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 8 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,600 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 8: 0 face(s) detected
+2026-04-14 01:54:38,663 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 9 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,710 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 9: 0 face(s) detected
+2026-04-14 01:54:38,791 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 10 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,835 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 10: 0 face(s) detected
+2026-04-14 01:54:38,925 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 11 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:38,984 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 11: 0 face(s) detected
+2026-04-14 01:54:39,042 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 12 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,114 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 12: 0 face(s) detected
+2026-04-14 01:54:39,159 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 13 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,238 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 13: 0 face(s) detected
+2026-04-14 01:54:39,291 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 14 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,334 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 14: 0 face(s) detected
+2026-04-14 01:54:39,426 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 15 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,502 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 15: 0 face(s) detected
+2026-04-14 01:54:39,536 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 16 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,585 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 16: 1 face(s) detected
+2026-04-14 01:54:39,673 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 17 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,739 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 17: 0 face(s) detected
+2026-04-14 01:54:39,787 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 18 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:39,828 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 18: 0 face(s) detected
+2026-04-14 01:54:39,925 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 19 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,005 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 19: 0 face(s) detected
+2026-04-14 01:54:40,039 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 20 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,103 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 20: 0 face(s) detected
+2026-04-14 01:54:40,173 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 21 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,226 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 21: 0 face(s) detected
+2026-04-14 01:54:40,290 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 22 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,364 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 22: 0 face(s) detected
+2026-04-14 01:54:40,425 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 23 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,508 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 23: 1 face(s) detected
+2026-04-14 01:54:40,540 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 24 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,605 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 24: 1 face(s) detected
+2026-04-14 01:54:40,675 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 25 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,724 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 25: 1 face(s) detected
+2026-04-14 01:54:40,791 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 26 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:40,863 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 26: 1 face(s) detected
+2026-04-14 01:54:40,930 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 27 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,008 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 27: 1 face(s) detected
+2026-04-14 01:54:41,037 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 28 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,105 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 28: 1 face(s) detected
+2026-04-14 01:54:41,179 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 29 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,254 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 29: 1 face(s) detected
+2026-04-14 01:54:41,291 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 30 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,370 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 30: 1 face(s) detected
+2026-04-14 01:54:41,427 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 31 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,490 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 31: 1 face(s) detected
+2026-04-14 01:54:41,552 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 32 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,633 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 32: 1 face(s) detected
+2026-04-14 01:54:41,673 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 33 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,744 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 33: 1 face(s) detected
+2026-04-14 01:54:41,791 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 34 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,844 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 34: 1 face(s) detected
+2026-04-14 01:54:41,923 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 35 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:41,987 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 35: 1 face(s) detected
+2026-04-14 01:54:42,039 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 36 received and decoded. Shape: (480, 640, 3)
+2026-04-14 01:54:42,082 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 36: 1 face(s) detected
+2026-04-14 01:54:42,085 [INFO] FaceAuth - _handle_registration_frame_inner:238 - Registration: captured 5 frames for yash21342
+2026-04-14 01:54:45,018 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: sQ0hjfkAWL5Lq2u4AAAD (reason: transport close)
+2026-04-14 01:54:55,850 [INFO] FaceAuth - handle_connect:97 - Client connected: AyH6brnYhWDtOT2CAAAF
+2026-04-14 01:54:56,227 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: yash21342 (sid: session_lj2ui1otl)
+2026-04-14 01:55:00,869 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: AyH6brnYhWDtOT2CAAAF (reason: transport close)
+2026-04-14 01:56:38,404 [INFO] FaceAuth - handle_connect:97 - Client connected: ai31klaS2KNRPH7-AAAH
+2026-04-14 01:56:38,866 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: yash21342 (sid: session_81cy2olcj)
+2026-04-14 01:56:47,575 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: ai31klaS2KNRPH7-AAAH (reason: transport close)
+2026-04-14 01:57:16,368 [INFO] FaceAuth - handle_connect:97 - Client connected: V8Q8mj01wC3rBVUFAAAJ
+2026-04-14 01:57:16,571 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: yash21342 (sid: session_c9e7kvxio)
+2026-04-14 01:57:20,120 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: V8Q8mj01wC3rBVUFAAAJ (reason: transport close)
+2026-04-14 01:57:43,143 [INFO] FaceAuth - handle_connect:97 - Client connected: G4Tg9kTSFbWz5B0OAAAL
+2026-04-14 01:57:43,250 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: yash21342 (sid: session_03alyjn80)
+2026-04-14 01:57:49,793 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: G4Tg9kTSFbWz5B0OAAAL (reason: transport close)
+2026-04-14 02:39:57,166 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:40:02,804 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:40:02,922 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:40:03,189 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:40:31,529 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:40:37,309 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:40:37,382 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:40:37,608 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:41:11,130 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:41:16,173 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:41:16,276 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:41:16,485 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:41:18,301 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:41:23,546 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:41:23,620 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:41:23,872 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:45:04,475 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:45:11,000 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:45:11,117 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:45:11,383 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:45:21,781 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:45:27,801 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:45:27,883 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:45:28,130 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:45:39,107 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:45:45,411 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:45:45,489 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:45:45,730 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 02:50:51,164 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 02:50:56,977 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 02:50:57,070 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 02:50:57,738 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 03:00:47,974 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 03:00:53,974 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 03:00:54,112 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 03:00:54,672 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 03:01:25,053 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 03:01:30,335 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 03:01:30,414 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 03:01:31,086 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 09:41:47,769 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 09:42:10,240 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 09:42:12,304 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 09:42:13,033 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 09:42:18,324 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 09:42:27,422 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 09:42:29,491 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 09:42:30,191 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 09:43:12,692 [INFO] FaceAuth - handle_connect:97 - Client connected: 0Rp_jYZ43nXQOxTUAAAB
+2026-04-14 09:43:13,743 [INFO] FaceAuth - handle_start_registration:124 - Starting registration capture for: qaz (sid: session_ksps7fq65)
+2026-04-14 09:43:13,901 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 1 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,057 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 1: 1 face(s) detected
+2026-04-14 09:43:14,135 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 2 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,198 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 2: 1 face(s) detected
+2026-04-14 09:43:14,259 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 3 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,315 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 3: 1 face(s) detected
+2026-04-14 09:43:14,383 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 4 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,445 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 4: 1 face(s) detected
+2026-04-14 09:43:14,513 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 5 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,574 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 5: 1 face(s) detected
+2026-04-14 09:43:14,629 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 6 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,682 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 6: 1 face(s) detected
+2026-04-14 09:43:14,767 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 7 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,826 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 7: 1 face(s) detected
+2026-04-14 09:43:14,885 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 8 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:14,945 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 8: 1 face(s) detected
+2026-04-14 09:43:15,013 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 9 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,068 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 9: 1 face(s) detected
+2026-04-14 09:43:15,134 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 10 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,189 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 10: 1 face(s) detected
+2026-04-14 09:43:15,268 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 11 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,323 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 11: 1 face(s) detected
+2026-04-14 09:43:15,390 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 12 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,443 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 12: 1 face(s) detected
+2026-04-14 09:43:15,506 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 13 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,560 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 13: 1 face(s) detected
+2026-04-14 09:43:15,632 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 14 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,691 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 14: 1 face(s) detected
+2026-04-14 09:43:15,758 [DEBUG] FaceAuth - _handle_registration_frame_inner:184 - [Registration] Frame 15 received and decoded. Shape: (480, 640, 3)
+2026-04-14 09:43:15,814 [DEBUG] FaceAuth - _handle_registration_frame_inner:188 - [Registration] Frame 15: 1 face(s) detected
+2026-04-14 09:43:15,818 [INFO] FaceAuth - _handle_registration_frame_inner:238 - Registration: captured 5 frames for qaz
+2026-04-14 09:43:18,579 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: 0Rp_jYZ43nXQOxTUAAAB (reason: transport close)
+2026-04-14 09:43:26,736 [INFO] FaceAuth - handle_connect:97 - Client connected: _TdGjW-eASaP_7wTAAAD
+2026-04-14 09:43:27,323 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: qaz (sid: session_rj2vq7nw4)
+2026-04-14 09:43:30,541 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: _TdGjW-eASaP_7wTAAAD (reason: transport close)
+2026-04-14 13:36:44,748 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 13:37:06,345 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 13:37:08,050 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 13:37:08,956 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 13:37:11,167 [INFO] FaceAuth - get_ml_modules:49 - FaceDetector loaded successfully.
+2026-04-14 13:37:17,782 [INFO] FaceAuth - get_ml_modules:57 - FaceRecognizer loaded successfully.
+2026-04-14 13:37:17,858 [INFO] FaceAuth - get_ml_modules:65 - LivenessDetector loaded successfully.
+2026-04-14 13:37:18,539 [INFO] FaceAuth - get_ml_modules:73 - DeepfakeDetector loaded successfully.
+2026-04-14 13:37:37,672 [INFO] FaceAuth - handle_connect:97 - Client connected: 9g0SUMJf2THpGOXdAAAB
+2026-04-14 13:37:39,036 [INFO] FaceAuth - handle_start_auth:273 - Starting face authentication for: abcd (sid: session_b3vw26o2y)
+2026-04-14 13:38:05,276 [INFO] FaceAuth - handle_disconnect:108 - Client disconnected: 9g0SUMJf2THpGOXdAAAB (reason: transport close)
