@@ -591,7 +591,7 @@ class DeepfakeDetector:
         try:
             from ml.face_detector import FaceDetector
             if not hasattr(self, '_face_detector_cache'):
-                self._face_detector_cache = FaceDetector()
+                self._face_detector_cache = FaceDetector()``
             
             faces = self._face_detector_cache.detect_faces(face_image)
             if len(faces) > 0:

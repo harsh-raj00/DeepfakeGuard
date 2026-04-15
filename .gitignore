@@ -7,32 +7,10 @@ env/
 __pycache__/
 *.pyc
 
-# ML Models & Large Files (GitHub 100MB Limit)
-ml/models/
-*.dat
-*.caffemodel
-*.prototxt
-*.h5
-*.keras
-*.webp
-*.mp4
-*.zip
 # Database
-data/database.db
-data/*.sqlite3
+# data/database.db
+# data/*.sqlite3
 
 # OS Files
 .DS_Store
 Thumbs.db
-
-# Project Deliverables / Documents
-*.doc
-*.docx
-*.ppt
-*.pptx
-*.tex
-*.pdf
-
-# Markdown files (exclude all, but keep README.md)
-*.md
-!README.md
